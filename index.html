@@ -1,980 +1,601 @@
 <!DOCTYPE html>
 <html lang="ro">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>CapStyle - Magazin Șepci Premium</title>
-    <style>
-        * {
-            margin: 0;
-            padding: 0;
-            box-sizing: border-box;
-        }
-
-        body {
-            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-            line-height: 1.6;
-            color: #333;
-            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
-            min-height: 100vh;
-        }
-
-        .container {
-            max-width: 1200px;
-            margin: 0 auto;
-            padding: 0 20px;
-        }
-
-        header {
-            background: rgba(255, 255, 255, 0.95);
-            backdrop-filter: blur(10px);
-            padding: 1rem 0;
-            position: sticky;
-            top: 0;
-            z-index: 100;
-            box-shadow: 0 2px 20px rgba(0, 0, 0, 0.1);
-        }
-
-        .header-content {
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-        }
-
-        .logo {
-            font-size: 2rem;
-            font-weight: bold;
-            color: #764ba2;
-        }
-
-        .cart-btn {
-            background: linear-gradient(45deg, #667eea, #764ba2);
-            color: white;
-            border: none;
-            padding: 10px 20px;
-            border-radius: 25px;
-            cursor: pointer;
-            font-weight: bold;
-            transition: transform 0.3s ease;
-            position: relative;
-        }
-
-        .cart-btn:hover {
-            transform: translateY(-2px);
-            box-shadow: 0 5px 15px rgba(118, 75, 162, 0.4);
-        }
-
-        .cart-count {
-            background: #ff4757;
-            color: white;
-            border-radius: 50%;
-            padding: 2px 8px;
-            font-size: 12px;
-            position: absolute;
-            top: -5px;
-            right: -5px;
-            min-width: 20px;
-            text-align: center;
-        }
-
-        .hero {
-            text-align: center;
-            padding: 4rem 0;
-            color: white;
-        }
-
-        .hero h1 {
-            font-size: 3.5rem;
-            margin-bottom: 1rem;
-            text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.3);
-        }
-
-        .hero p {
-            font-size: 1.3rem;
-            margin-bottom: 2rem;
-            text-shadow: 1px 1px 2px rgba(0, 0, 0, 0.3);
-        }
-
-        .products-section {
-            background: white;
-            padding: 4rem 0;
-            margin-top: 2rem;
-            border-radius: 30px 30px 0 0;
-        }
-
-        .products-grid {
-            display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
-            gap: 2rem;
-            margin-top: 2rem;
-        }
-
-        .product-card {
-            background: white;
-            border-radius: 20px;
-            padding: 1.5rem;
-            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.1);
-            transition: transform 0.3s ease, box-shadow 0.3s ease;
-            overflow: hidden;
-        }
-
-        .product-card:hover {
-            transform: translateY(-10px);
-            box-shadow: 0 20px 40px rgba(0, 0, 0, 0.2);
-        }
-
-        .product-image {
-            width: 100%;
-            height: 250px;
-            background: linear-gradient(45deg, #f8f9fa, #e9ecef);
-            border-radius: 15px;
-            margin-bottom: 1rem;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            font-size: 3rem;
-            position: relative;
-            overflow: hidden;
-        }
-
-        .product-image::before {
-            content: '🧢';
-            font-size: 4rem;
-            opacity: 0.7;
-        }
-
-        .product-title {
-            font-size: 1.3rem;
-            font-weight: bold;
-            margin-bottom: 0.5rem;
-            color: #333;
-        }
-
-        .product-price {
-            font-size: 1.5rem;
-            color: #764ba2;
-            font-weight: bold;
-            margin-bottom: 1rem;
-        }
-
-        .add-to-cart {
-            background: linear-gradient(45deg, #667eea, #764ba2);
-            color: white;
-            border: none;
-            padding: 12px 24px;
-            border-radius: 25px;
-            cursor: pointer;
-            font-weight: bold;
-            width: 100%;
-            transition: all 0.3s ease;
-        }
-
-        .add-to-cart:hover {
-            transform: translateY(-2px);
-            box-shadow: 0 5px 15px rgba(118, 75, 162, 0.4);
-        }
-
-        .cart-modal {
-            display: none;
-            position: fixed;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 100%;
-            background: rgba(0, 0, 0, 0.5);
-            backdrop-filter: blur(5px);
-            z-index: 1000;
-        }
-
-        .cart-content {
-            position: absolute;
-            top: 50%;
-            left: 50%;
-            transform: translate(-50%, -50%);
-            background: white;
-            border-radius: 20px;
-            padding: 2rem;
-            width: 90%;
-            max-width: 600px;
-            max-height: 80vh;
-            overflow-y: auto;
-        }
-
-        .cart-header {
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            margin-bottom: 2rem;
-            padding-bottom: 1rem;
-            border-bottom: 2px solid #f1f3f4;
-        }
-
-        .close-cart {
-            background: none;
-            border: none;
-            font-size: 1.5rem;
-            cursor: pointer;
-            color: #666;
-        }
-
-        .cart-item {
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            padding: 1rem;
-            border-bottom: 1px solid #f1f3f4;
-        }
-
-        .cart-item-info {
-            flex: 1;
-        }
-
-        .cart-item-controls {
-            display: flex;
-            align-items: center;
-            gap: 1rem;
-        }
-
-        .quantity-btn {
-            background: #764ba2;
-            color: white;
-            border: none;
-            width: 30px;
-            height: 30px;
-            border-radius: 50%;
-            cursor: pointer;
-            font-weight: bold;
-        }
-
-        .quantity {
-            min-width: 30px;
-            text-align: center;
-            font-weight: bold;
-        }
-
-        .remove-btn {
-            background: #ff4757;
-            color: white;
-            border: none;
-            padding: 5px 10px;
-            border-radius: 15px;
-            cursor: pointer;
-            font-size: 12px;
-        }
-
-        .cart-total {
-            text-align: center;
-            margin: 2rem 0;
-            font-size: 1.5rem;
-            font-weight: bold;
-            color: #764ba2;
-        }
-
-        .checkout-section {
-            display: none;
-            margin-top: 2rem;
-            padding-top: 2rem;
-            border-top: 2px solid #f1f3f4;
-        }
-
-        .customer-form {
-            margin-bottom: 2rem;
-            padding: 1.5rem;
-            background: #f8f9fa;
-            border-radius: 15px;
-        }
-
-        .form-group {
-            margin-bottom: 1rem;
-        }
-
-        .form-group label {
-            display: block;
-            margin-bottom: 0.5rem;
-            font-weight: bold;
-            color: #333;
-        }
-
-        .form-group input {
-            width: 100%;
-            padding: 10px;
-            border: 2px solid #ddd;
-            border-radius: 8px;
-            font-size: 14px;
-        }
-
-        .form-group input:focus {
-            outline: none;
-            border-color: #764ba2;
-        }
-
-        .form-row {
-            display: grid;
-            grid-template-columns: 1fr 1fr;
-            gap: 1rem;
-        }
-
-        .payment-methods {
-            display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
-            gap: 1rem;
-            margin-top: 1rem;
-        }
-
-        .payment-btn {
-            padding: 15px;
-            border: 2px solid #764ba2;
-            background: white;
-            border-radius: 15px;
-            cursor: pointer;
-            font-weight: bold;
-            transition: all 0.3s ease;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            gap: 10px;
-        }
-
-        .payment-btn:hover {
-            background: #764ba2;
-            color: white;
-        }
-
-        .payment-btn.selected {
-            background: #764ba2;
-            color: white;
-        }
-
-        .checkout-btn {
-            background: linear-gradient(45deg, #667eea, #764ba2);
-            color: white;
-            border: none;
-            padding: 15px 30px;
-            border-radius: 25px;
-            cursor: pointer;
-            font-weight: bold;
-            width: 100%;
-            margin-top: 1rem;
-            font-size: 1.1rem;
-        }
-
-        .checkout-btn:disabled {
-            opacity: 0.6;
-            cursor: not-allowed;
-        }
-
-        .empty-cart {
-            text-align: center;
-            padding: 2rem;
-            color: #666;
-        }
-
-        .success-message {
-            display: none;
-            background: #2ed573;
-            color: white;
-            padding: 1rem;
-            border-radius: 10px;
-            margin-bottom: 1rem;
-            text-align: center;
-        }
-
-        .error-message {
-            display: none;
-            background: #ff4757;
-            color: white;
-            padding: 1rem;
-            border-radius: 10px;
-            margin-bottom: 1rem;
-            text-align: center;
-        }
-
-        .loading {
-            display: none;
-            text-align: center;
-            padding: 1rem;
-            color: #764ba2;
-        }
-
-        .loading::after {
-            content: '';
-            display: inline-block;
-            width: 20px;
-            height: 20px;
-            border: 2px solid #764ba2;
-            border-radius: 50%;
-            border-top-color: transparent;
-            animation: spin 1s linear infinite;
-            margin-left: 10px;
-        }
-
-        @keyframes spin {
-            to { transform: rotate(360deg); }
-        }
-
-        @media (max-width: 768px) {
-            .hero h1 {
-                font-size: 2.5rem;
-            }
-            
-            .products-grid {
-                grid-template-columns: 1fr;
-            }
-            
-            .payment-methods {
-                grid-template-columns: 1fr;
-            }
-            
-            .form-row {
-                grid-template-columns: 1fr;
-            }
-        }
-
-        .notification {
-            position: fixed;
-            top: 20px;
-            right: 20px;
-            background: #2ed573;
-            color: white;
-            padding: 1rem 1.5rem;
-            border-radius: 10px;
-            z-index: 1001;
-            transform: translateX(400px);
-            transition: transform 0.3s ease;
-        }
-
-        .notification.show {
-            transform: translateX(0);
-        }
-
-        .footer {
-            background: rgba(255, 255, 255, 0.1);
-            color: white;
-            text-align: center;
-            padding: 2rem 0;
-            margin-top: 4rem;
-        }
-    </style>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+<title>WebCraft Pro - Servicii Complete Web Development</title>
+<script src="https://cdn.jsdelivr.net/npm/@emailjs/browser@3/dist/email.min.js"></script>
+<style>
+  *{margin:0;padding:0;box-sizing:border-box}
+  body{font-family:'Segoe UI',Tahoma,Geneva,Verdana,sans-serif;line-height:1.6;color:#333;background:linear-gradient(135deg,#667eea 0%,#764ba2 100%);min-height:100vh}
+  .container{max-width:1400px;margin:0 auto;padding:0 20px}
+  nav{background:rgba(255,255,255,.95);backdrop-filter:blur(10px);padding:1rem 0;position:fixed;width:100%;top:0;z-index:1000;box-shadow:0 2px 20px rgba(0,0,0,.1)}
+  .nav-container{display:flex;justify-content:space-between;align-items:center;max-width:1400px;margin:0 auto;padding:0 20px}
+  .logo{font-size:1.8rem;font-weight:bold;background:linear-gradient(45deg,#667eea,#764ba2);-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text;cursor:pointer;transition:transform 0.3s ease}
+  .logo:hover{transform:scale(1.05)}
+  .nav-menu{display:flex;list-style:none;gap:2rem}
+  .nav-menu li{cursor:pointer;padding:.5rem 1rem;border-radius:25px;transition:.3s;position:relative}
+  .nav-menu li:hover{background:linear-gradient(45deg,#667eea,#764ba2);color:#fff;transform:translateY(-2px)}
+  .nav-menu li.active{background:linear-gradient(45deg,#667eea,#764ba2);color:#fff}
+  .main-content{margin-top:80px;min-height:calc(100vh - 80px)}
+  .tab-content{display:none;padding:2rem 0;animation:fadeIn .5s ease-in}
+  .tab-content.active{display:block}
+  @keyframes fadeIn{from{opacity:0;transform:translateY(20px)}to{opacity:1;transform:translateY(0)}}
+  .hero{background:rgba(255,255,255,.1);backdrop-filter:blur(20px);border-radius:20px;padding:4rem 2rem;text-align:center;margin-bottom:3rem;border:1px solid rgba(255,255,255,.2)}
+  .hero h1{font-size:3.5rem;color:#fff;margin-bottom:1rem;text-shadow:0 2px 10px rgba(0,0,0,.3)}
+  .hero p{font-size:1.3rem;color:rgba(255,255,255,.9);margin-bottom:2rem;max-width:600px;margin-left:auto;margin-right:auto}
+  .cta-button{background:linear-gradient(45deg,#ff6b6b,#ee5a24);color:#fff;padding:1rem 2.5rem;border:none;border-radius:50px;font-size:1.1rem;cursor:pointer;transition:.3s;text-decoration:none;display:inline-block;box-shadow:0 10px 30px rgba(238,90,36,.3)}
+  .cta-button:hover{transform:translateY(-3px);box-shadow:0 15px 40px rgba(238,90,36,.4)}
+  .services-grid,.pricing-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(300px,1fr));gap:2rem;margin:3rem 0}
+  .service-card,.pricing-card{background:rgba(255,255,255,.95);backdrop-filter:blur(10px);padding:2rem;border-radius:15px;box-shadow:0 10px 30px rgba(0,0,0,.1);transition:.3s;border:1px solid rgba(255,255,255,.2)}
+  .service-card:hover,.pricing-card:hover{transform:translateY(-10px);box-shadow:0 20px 50px rgba(0,0,0,.15)}
+  .service-icon{width:60px;height:60px;background:linear-gradient(45deg,#667eea,#764ba2);border-radius:50%;display:flex;align-items:center;justify-content:center;margin-bottom:1rem;font-size:1.5rem;color:#fff}
+  .pricing-grid{grid-template-columns:repeat(auto-fit,minmax(280px,1fr));margin:2rem 0}
+  .pricing-card{border:2px solid transparent;text-align:center;position:relative}
+  .pricing-card:hover{border:2px solid #667eea;transform:translateY(-5px)}
+  .pricing-card.featured{border:2px solid #ff6b6b;transform:scale(1.05)}
+  .pricing-card.featured::before{content:"RECOMANDAT";position:absolute;top:-15px;left:50%;transform:translateX(-50%);background:linear-gradient(45deg,#ff6b6b,#ee5a24);color:#fff;padding:.5rem 1.5rem;border-radius:20px;font-size:.8rem;font-weight:bold}
+  .price{font-size:2.5rem;font-weight:bold;color:#333;margin:1rem 0}
+  .feature-list{list-style:none;margin:2rem 0}
+  .feature-list li{padding:.5rem 0;color:#666}
+  .feature-list li:before{content:"✓";color:#27ae60;font-weight:bold;margin-right:.5rem}
+  .portfolio-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(350px,1fr));gap:2rem;margin:2rem 0}
+  .portfolio-item{background:rgba(255,255,255,.95);border-radius:15px;overflow:hidden;box-shadow:0 10px 30px rgba(0,0,0,.1);transition:.3s;cursor:pointer}
+  .portfolio-item:hover{transform:translateY(-5px);box-shadow:0 20px 50px rgba(0,0,0,.15)}
+  .portfolio-image{width:100%;height:200px;background:linear-gradient(45deg,#667eea,#764ba2);display:flex;align-items:center;justify-content:center;color:#fff;font-size:1.2rem;position:relative}
+  .portfolio-overlay{position:absolute;inset:0;background:rgba(0,0,0,.8);display:flex;align-items:center;justify-content:center;opacity:0;transition:opacity .3s}
+  .portfolio-item:hover .portfolio-overlay{opacity:1}
+  .portfolio-info{padding:1.5rem}
+  .contact-form{background:rgba(255,255,255,.95);backdrop-filter:blur(10px);padding:2rem;border-radius:15px;max-width:600px;margin:2rem auto}
+  .form-group{margin-bottom:1.5rem}
+  .form-group label{display:block;margin-bottom:.5rem;font-weight:bold;color:#333}
+  .form-group input,.form-group textarea,.form-group select{width:100%;padding:1rem;border:2px solid #e1e1e1;border-radius:8px;font-size:1rem;transition:border-color .3s}
+  .form-group input:focus,.form-group textarea:focus,.form-group select:focus{outline:none;border-color:#667eea}
+  .mobile-menu-toggle{display:none;flex-direction:column;cursor:pointer;padding:5px;border:0;background:transparent}
+  .mobile-menu-toggle span{width:25px;height:3px;background:#333;margin:3px 0;transition:.3s;border-radius:2px}
+  .mobile-menu-toggle.active span:nth-child(1){transform:rotate(-45deg) translate(-5px,6px)}
+  .mobile-menu-toggle.active span:nth-child(2){opacity:0}
+  .mobile-menu-toggle.active span:nth-child(3){transform:rotate(45deg) translate(-5px,-6px)}
+  @media (max-width:768px){
+    .mobile-menu-toggle{display:flex}
+    .nav-menu{position:fixed;top:70px;left:0;right:0;background:rgba(255,255,255,.98);backdrop-filter:blur(10px);flex-direction:column;padding:1rem 0;box-shadow:0 2px 20px rgba(0,0,0,.1);display:none;z-index:999}
+    .nav-menu.mobile-active{display:flex}
+    .nav-menu li{margin:.5rem 1rem;text-align:center;padding:1rem;border-radius:10px}
+    .hero h1{font-size:2.5rem}
+    .hero p{font-size:1.1rem}
+    .services-grid,.pricing-grid,.portfolio-grid{grid-template-columns:1fr}
+  }
+  .section-title{color:#fff;font-size:2.5rem;text-align:center;margin:2rem 0;text-shadow:0 2px 10px rgba(0,0,0,.3)}
+  /* Modal preview */
+  .modal{position:fixed;inset:0;background:rgba(0,0,0,.65);display:none;align-items:center;justify-content:center;z-index:2000;padding:20px}
+  .modal.open{display:flex}
+  .modal-dialog{background:#fff;border-radius:12px;max-width:1100px;width:100%;height:80vh;display:flex;flex-direction:column;overflow:hidden}
+  .modal-header{display:flex;justify-content:space-between;align-items:center;padding:12px 16px;border-bottom:1px solid #eee}
+  .modal-title{font-weight:600}
+  .modal-close{background:#eee;border:0;border-radius:8px;padding:8px 12px;cursor:pointer}
+  .modal-body{flex:1}
+  .modal-iframe{width:100%;height:100%;border:0}
+</style>
 </head>
 <body>
-    <header>
-        <div class="container">
-            <div class="header-content">
-                <div class="logo">CapStyle</div>
-                <button class="cart-btn" onclick="toggleCart()">
-                    🛒 Coș
-                    <span class="cart-count" id="cartCount">0</span>
-                </button>
-            </div>
-        </div>
-    </header>
-
-    <section class="hero">
-        <div class="container">
-            <h1>Șepci Premium</h1>
-            <p>Descoperă colecția noastră de șepci de calitate superioară</p>
-            <p style="font-size: 1rem; opacity: 0.9;">✅ Livrare gratuită peste 200 RON | 📞 Suport 24/7 | 🔒 Plăți securizate</p>
-        </div>
-    </section>
-
-    <section class="products-section">
-        <div class="container">
-            <h2 style="text-align: center; margin-bottom: 1rem; color: #333;">Produsele Noastre</h2>
-            
-            <div class="products-grid" id="productsGrid">
-                <!-- Produsele vor fi generate dinamic -->
-            </div>
-        </div>
-    </section>
-
-    <footer class="footer">
-        <div class="container">
-            <p>&copy; 2025 CapStyle. Toate drepturile rezervate. | Made with ❤️ in România</p>
-        </div>
-    </footer>
-
-    <!-- Cart Modal -->
-    <div class="cart-modal" id="cartModal">
-        <div class="cart-content">
-            <div class="cart-header">
-                <h2>Coșul Tău</h2>
-                <button class="close-cart" onclick="toggleCart()">×</button>
-            </div>
-            
-            <div class="success-message" id="successMessage">
-                Comanda a fost plasată cu succes! 🎉<br>
-                Vei primi un email de confirmare în curând.
-            </div>
-            
-            <div class="error-message" id="errorMessage">
-                A apărut o eroare. Te rugăm să încerci din nou.
-            </div>
-            
-            <div class="loading" id="loadingMessage">
-                Se procesează comanda...
-            </div>
-            
-            <div id="cartItems"></div>
-            
-            <div class="cart-total" id="cartTotal">Total: 0 RON</div>
-            
-            <div class="checkout-section" id="checkoutSection">
-                <div class="customer-form">
-                    <h3 style="margin-bottom: 1rem;">Datele de Contact:</h3>
-                    
-                    <div class="form-row">
-                        <div class="form-group">
-                            <label for="firstName">Prenume *</label>
-                            <input type="text" id="firstName" required>
-                        </div>
-                        <div class="form-group">
-                            <label for="lastName">Nume *</label>
-                            <input type="text" id="lastName" required>
-                        </div>
-                    </div>
-                    
-                    <div class="form-group">
-                        <label for="email">Email *</label>
-                        <input type="email" id="email" required>
-                    </div>
-                    
-                    <div class="form-group">
-                        <label for="phone">Telefon *</label>
-                        <input type="tel" id="phone" required>
-                    </div>
-                    
-                    <div class="form-group">
-                        <label for="address">Adresa *</label>
-                        <input type="text" id="address" placeholder="Strada, numărul" required>
-                    </div>
-                    
-                    <div class="form-row">
-                        <div class="form-group">
-                            <label for="city">Oraș *</label>
-                            <input type="text" id="city" required>
-                        </div>
-                        <div class="form-group">
-                            <label for="zipCode">Cod Poștal</label>
-                            <input type="text" id="zipCode">
-                        </div>
-                    </div>
-                </div>
-                
-                <h3>Selectează metoda de plată:</h3>
-                <div class="payment-methods">
-                    <button class="payment-btn" onclick="selectPayment('card')" id="cardBtn">
-                        💳 Card Bancar
-                    </button>
-                    <button class="payment-btn" onclick="selectPayment('payu')" id="payuBtn">
-                        🏦 PayU România
-                    </button>
-                    <button class="payment-btn" onclick="selectPayment('googlepay')" id="googlePayBtn">
-                        🅖 Google Pay
-                    </button>
-                    <button class="payment-btn" onclick="selectPayment('ramburs')" id="rambursBtn">
-                        📦 Ramburs
-                    </button>
-                </div>
-                <button class="checkout-btn" onclick="processPayment()">Finalizează Comanda</button>
-            </div>
-        </div>
+  <nav>
+    <div class="nav-container">
+      <div class="logo" id="logoLink">WebCraft Pro</div>
+      <button id="mobileToggle" class="mobile-menu-toggle" aria-label="Deschide meniul" aria-expanded="false">
+        <span></span><span></span><span></span>
+      </button>
+      <ul class="nav-menu" id="navMenu">
+        <li data-tab="home" class="active">Acasă</li>
+        <li data-tab="services">Servicii</li>
+        <li data-tab="pricing">Prețuri</li>
+        <li data-tab="hosting">Hosting</li>
+        <li data-tab="portfolio">Portofoliu</li>
+        <li data-tab="contact">Contact</li>
+        <li data-tab="about">Despre Noi</li>
+      </ul>
     </div>
+  </nav>
 
-    <div class="notification" id="notification"></div>
+  <div class="main-content">
+    <div class="container">
+      <!-- HOME -->
+      <div id="home" class="tab-content active">
+        <div class="hero">
+          <h1>WebCraft Pro</h1>
+          <p>Transformăm ideile în experiențe web excepționale. Servicii complete de web development cu tehnologii moderne și prețuri accesibile.</p>
+          <a href="#" data-tab="contact" class="cta-button nav-link">Solicită Ofertă Gratuită</a>
+        </div>
 
-    <script>
-        // Produse cu mai multe detalii
-        const products = [
-            { 
-                id: 1, 
-                name: "Șapcă Baseball Classic", 
-                price: 89, 
-                image: "🧢",
-                description: "Șapcă clasică din bumbac 100%, perfectă pentru orice ocazie."
-            },
-            { 
-                id: 2, 
-                name: "Șapcă Snapback Urban", 
-                price: 129, 
-                image: "🧢",
-                description: "Design urban modern cu reglare snapback."
-            },
-            { 
-                id: 3, 
-                name: "Șapcă Trucker Vintage", 
-                price: 99, 
-                image: "🧢",
-                description: "Stil vintage cu plasă în spate pentru ventilație."
-            },
-            { 
-                id: 4, 
-                name: "Șapcă Dad Hat Minimalist", 
-                price: 79, 
-                image: "🧢",
-                description: "Design minimalist, confort maxim."
-            },
-            { 
-                id: 5, 
-                name: "Șapcă Beanie Winter", 
-                price: 109, 
-                image: "🧢",
-                description: "Călduroasă și confortabilă pentru iarnă."
-            },
-            { 
-                id: 6, 
-                name: "Șapcă Bucket Summer", 
-                price: 119, 
-                image: "🧢",
-                description: "Protecție completă pentru zilele însorite."
-            }
-        ];
+        <h2 class="section-title">De ce să ne alegi?</h2>
+        <div class="services-grid">
+          <div class="service-card">
+            <div class="service-icon">🚀</div>
+            <h3>Performanță Optimizată</h3>
+            <p>Site-uri rapide cu scoruri excelente în PageSpeed și Core Web Vitals.</p>
+          </div>
+          <div class="service-card">
+            <div class="service-icon">📱</div>
+            <h3>Design Responsiv</h3>
+            <p>100% responsive – mobile, tablet și desktop.</p>
+          </div>
+          <div class="service-card">
+            <div class="service-icon">🔒</div>
+            <h3>Securitate</h3>
+            <p>SSL, backup și bune practici de securitate.</p>
+          </div>
+          <div class="service-card">
+            <div class="service-icon">⚡</div>
+            <h3>Tehnologii Moderne</h3>
+            <p>HTML5, CSS3, JavaScript ES6+, PHP, MySQL, React și altele.</p>
+          </div>
+        </div>
+      </div>
 
-        // Coș de cumpărături
-        let cart = [];
-        let selectedPayment = null;
+      <!-- SERVICES -->
+      <div id="services" class="tab-content">
+        <h2 class="section-title">Serviciile Noastre</h2>
+        <div class="services-grid">
+          <div class="service-card">
+            <div class="service-icon">⚡</div>
+            <h3>Site-uri HTML Personalizate</h3>
+            <p>Dezvoltare completă cu HTML5, CSS3 și JavaScript pentru performanțe maxime și design unic.</p>
+            <ul class="feature-list">
+              <li>Cod HTML5 semantic</li>
+              <li>Animații și micro-interacțiuni</li>
+              <li>JavaScript interactiv</li>
+              <li>Optimizare pentru viteză</li>
+              <li>Compatibilitate cross-browser</li>
+            </ul>
+          </div>
+          <div class="service-card">
+            <div class="service-icon">🛒</div>
+            <h3>Magazine Online</h3>
+            <p>Soluții e-commerce custom, cu sistem de plată personalizat.</p>
+            <ul class="feature-list">
+              <li>Catalog produse și coș</li>
+              <li>Plăți online personalizate</li>
+              <li>Gestiune comenzi și stocuri</li>
+              <li>Integrare curier</li>
+              <li>Rapoarte și analytics</li>
+            </ul>
+          </div>
+          <div class="service-card">
+            <div class="service-icon">🔧</div>
+            <h3>Mentenanță și Suport</h3>
+            <p>Actualizări, backup-uri și suport tehnic continuu.</p>
+            <ul class="feature-list">
+              <li>Actualizări regulate</li>
+              <li>Monitorizare uptime</li>
+              <li>Backup</li>
+              <li>Suport tehnic</li>
+              <li>Rapoarte periodice</li>
+            </ul>
+          </div>
+        </div>
+      </div>
 
-        // Afișare produse
-        function renderProducts() {
-            const grid = document.getElementById('productsGrid');
-            grid.innerHTML = products.map(product => `
-                <div class="product-card">
-                    <div class="product-image">
-                        <span style="font-size: 4rem;">${product.image}</span>
-                    </div>
-                    <div class="product-title">${product.name}</div>
-                    <div class="product-price">${product.price} RON</div>
-                    <p style="color: #666; font-size: 0.9rem; margin-bottom: 1rem;">${product.description}</p>
-                    <button class="add-to-cart" onclick="addToCart(${product.id})">
-                        Adaugă în Coș
-                    </button>
-                </div>
-            `).join('');
+      <!-- PRICING -->
+      <div id="pricing" class="tab-content">
+        <h2 class="section-title">Pachete și Prețuri</h2>
+        <p style="text-align:center;color:#fff;margin-bottom:2rem;font-size:1.1rem">Prețuri competitive pentru piața din România. Toate prețurile includ TVA și sunt fără costuri ascunse.</p>
+
+        <h3 style="color:#fff;text-align:center;margin:2rem 0">Site-uri HTML Personalizate</h3>
+        <div class="pricing-grid">
+          <div class="pricing-card">
+            <h3>HTML Simplu</h3>
+            <div class="price">399 RON</div>
+            <ul class="feature-list">
+              <li>Până la 5 pagini</li>
+              <li>Design 100% personalizat</li>
+              <li>HTML5, CSS3, JavaScript</li>
+              <li>Performanță optimizată</li>
+              <li>Cross-browser compatible</li>
+              <li>Sursă cod furnizată</li>
+            </ul>
+            <button class="cta-button pricing-button" data-service="html-simplu">Comandă Acum</button>
+          </div>
+          <div class="pricing-card featured">
+            <h3>HTML Avansat</h3>
+            <div class="price">749 RON</div>
+            <ul class="feature-list">
+              <li>Până la 10 pagini</li>
+              <li>Animații avansate</li>
+              <li>JavaScript interactiv</li>
+              <li>API integrări</li>
+              <li>Formulare și hărți</li>
+              <li>PageSpeed 95+</li>
+            </ul>
+            <button class="cta-button pricing-button" data-service="html-avansat">Comandă Acum</button>
+          </div>
+          <div class="pricing-card">
+            <h3>Magazin Online</h3>
+            <div class="price">1499 RON</div>
+            <ul class="feature-list">
+              <li>Magazin online complet</li>
+              <li>Coș, checkout, cont client</li>
+              <li>Sistem de plată personalizat</li>
+              <li>Gestiune produse/comenzi</li>
+              <li>Integrare curier</li>
+              <li>1 an suport inclus</li>
+            </ul>
+            <button class="cta-button pricing-button" data-service="magazin-online">Comandă Acum</button>
+          </div>
+          <!-- Card TEST 1 RON -->
+          <div class="pricing-card">
+            <h3>Test</h3>
+            <div class="price">1 RON</div>
+            <ul class="feature-list">
+              <li>Pentru verificări de flux</li>
+              <li>Exercițiu de plată</li>
+              <li>Nu include livrare finală</li>
+            </ul>
+            <button class="cta-button pricing-button" data-service="test">Încearcă</button>
+          </div>
+        </div>
+      </div>
+
+      <!-- HOSTING -->
+      <div id="hosting" class="tab-content">
+        <h2 class="section-title">Hosting</h2>
+        <p style="text-align:center;color:#fff;margin-bottom:2rem;font-size:1.1rem">Găzduire și automatizare de deploy pentru proiecte statice.</p>
+
+        <div class="pricing-grid">
+          <div class="pricing-card">
+            <h3>Hosting Start</h3>
+            <div class="price">30 RON <span>/lună</span></div>
+            <ul class="feature-list">
+              <li>Deploy automat la fiecare push</li>
+              <li>HTTPS activ</li>
+              <li>Domeniu personalizat (DNS)</li>
+              <li>Livrare prin CDN</li>
+              <li>Monitoring de bază</li>
+              <li>Notă: pentru site-uri statice</li>
+            </ul>
+            <button class="cta-button pricing-button" data-service="hosting">Activează</button>
+          </div>
+        </div>
+
+        <div style="background:rgba(255,255,255,.9);border-radius:15px;padding:2rem;margin:3rem 0">
+          <h3 style="text-align:center;margin-bottom:1rem">Notă importantă</h3>
+          <p style="text-align:center">Pachetul de hosting este destinat proiectelor <strong>statice</strong>. Pentru funcționalități dinamice (autentificare, baze de date, procesare server) se folosesc servicii separate (API/serverless).</p>
+        </div>
+      </div>
+
+      <!-- PORTFOLIO (cu preview în modal) -->
+      <div id="portfolio" class="tab-content">
+        <h2 class="section-title">Portofoliul Nostru</h2>
+        <p style="text-align:center;color:#fff;margin-bottom:2rem;font-size:1.1rem">Click pe un model pentru a vedea preview-ul live.</p>
+
+        <div class="portfolio-grid">
+          <div class="portfolio-item" data-demo="restaurant">
+            <div class="portfolio-image">
+              Restaurant "La Bunicii"
+              <div class="portfolio-overlay"><div style="text-align:center;color:#fff">Deschide model</div></div>
+            </div>
+            <div class="portfolio-info">
+              <h3>Restaurant "La Bunicii"</h3>
+              <p>Site pentru restaurant cu meniu interactiv și rezervări.</p>
+              <p><strong>Tehnologii:</strong> HTML, CSS, JS, plăți custom</p>
+            </div>
+          </div>
+
+          <div class="portfolio-item" data-demo="clinic">
+            <div class="portfolio-image" style="background:linear-gradient(45deg,#e74c3c,#c0392b)">
+              Clinica Dentară ProDent
+              <div class="portfolio-overlay"><div style="text-align:center;color:#fff">Deschide model</div></div>
+            </div>
+            <div class="portfolio-info">
+              <h3>Clinica Dentară ProDent</h3>
+              <p>Programări online, galerie before/after, pagini servicii.</p>
+              <p><strong>Tehnologii:</strong> HTML5, CSS3, JavaScript</p>
+            </div>
+          </div>
+
+          <div class="portfolio-item" data-demo="shop">
+            <div class="portfolio-image" style="background:linear-gradient(45deg,#27ae60,#229954)">
+              Shop Online "TechGear"
+              <div class="portfolio-overlay"><div style="text-align:center;color:#fff">Deschide model</div></div>
+            </div>
+            <div class="portfolio-info">
+              <h3>Shop Online "TechGear"</h3>
+              <p>Magazin cu listă produse, filtru, coș și checkout custom.</p>
+              <p><strong>Tehnologii:</strong> Frontend JS, backend custom</p>
+            </div>
+          </div>
+
+          <div class="portfolio-item" data-demo="realestate">
+            <div class="portfolio-image" style="background:linear-gradient(45deg,#f39c12,#e67e22)">
+              Agenția Imobiliară "CasaMea"
+              <div class="portfolio-overlay"><div style="text-align:center;color:#fff">Deschide model</div></div>
+            </div>
+            <div class="portfolio-info">
+              <h3>Agenția Imobiliară "CasaMea"</h3>
+              <p>Căutare avansată, carduri proprietăți, pagină detalii.</p>
+              <p><strong>Tehnologii:</strong> PHP, MySQL, Maps API</p>
+            </div>
+          </div>
+
+          <div class="portfolio-item" data-demo="beauty">
+            <div class="portfolio-image" style="background:linear-gradient(45deg,#9b59b6,#8e44ad)">
+              Salon "Bella"
+              <div class="portfolio-overlay"><div style="text-align:center;color:#fff">Deschide model</div></div>
+            </div>
+            <div class="portfolio-info">
+              <h3>Salon de Frumusețe "Bella"</h3>
+              <p>Programări, listă servicii, testimoniale, galerie.</p>
+              <p><strong>Tehnologii:</strong> HTML, CSS, JS</p>
+            </div>
+          </div>
+
+          <div class="portfolio-item" data-demo="accounting">
+            <div class="portfolio-image" style="background:linear-gradient(45deg,#3498db,#2980b9)">
+              "ExpertCont"
+              <div class="portfolio-overlay"><div style="text-align:center;color:#fff">Deschide model</div></div>
+            </div>
+            <div class="portfolio-info">
+              <h3>Firma de Contabilitate "ExpertCont"</h3>
+              <p>Servicii, încărcare documente, contact rapid.</p>
+              <p><strong>Tehnologii:</strong> HTML5, PHP, MySQL</p>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- CONTACT -->
+      <div id="contact" class="tab-content">
+        <h2 class="section-title">Contactează-ne</h2>
+        <p style="text-align:center;color:#fff;margin-bottom:2rem;font-size:1.1rem">Suntem aici să îți transformăm visul digital în realitate. Solicită o ofertă personalizată!</p>
+
+        <div class="contact-form">
+          <h3 style="text-align:center;margin-bottom:2rem">Solicită Ofertă Gratuită</h3>
+          <form id="contactForm">
+            <div class="form-group"><label for="name">Nume Complet *</label><input type="text" id="name" name="name" required/></div>
+            <div class="form-group"><label for="email">Email *</label><input type="email" id="email" name="email" required/></div>
+            <div class="form-group"><label for="phone">Telefon</label><input type="tel" id="phone" name="phone"/></div>
+            <div class="form-group"><label for="company">Companie</label><input type="text" id="company" name="company"/></div>
+            <div class="form-group">
+              <label for="service">Tip Serviciu *</label>
+              <select id="service" name="service" required>
+                <option value="">Selectează serviciul</option>
+                <option value="html-simplu">HTML Simplu (399 RON)</option>
+                <option value="html-avansat">HTML Avansat (749 RON)</option>
+                <option value="magazin-online">Magazin Online (1499 RON)</option>
+                <option value="hosting">Hosting</option>
+                <option value="mentenanta">Mentenanță</option>
+                <option value="consultanta">Consultanță Tehnică</option>
+                <option value="test">Test (1 RON)</option>
+                <option value="altele">Altele (specificați în mesaj)</option>
+              </select>
+            </div>
+            <div class="form-group">
+              <label for="budget">Buget Estimat</label>
+              <select id="budget" name="budget">
+                <option value="">Selectează bugetul</option>
+                <option value="sub-500">Sub 500 RON</option>
+                <option value="500-1000">500 - 1000 RON</option>
+                <option value="1000-2000">1000 - 2000 RON</option>
+                <option value="2000-5000">2000 - 5000 RON</option>
+                <option value="peste-5000">Peste 5000 RON</option>
+              </select>
+            </div>
+            <div class="form-group"><label for="deadline">Deadline Dorit</label><input type="date" id="deadline" name="deadline"/></div>
+            <div class="form-group"><label for="message">Descrierea Proiectului *</label><textarea id="message" name="message" rows="6" required placeholder="Descrie-ne funcționalități, design, etc."></textarea></div>
+            <div class="form-group"><label><input type="checkbox" required style="margin-right:10px"/> Sunt de acord cu <a href="#" style="color:#667eea">termenii și condițiile</a> și <a href="#" style="color:#667eea">politica de confidențialitate</a> *</label></div>
+            <button type="submit" class="cta-button" style="width:100%;margin-top:1rem">📧 Trimite Solicitarea</button>
+          </form>
+        </div>
+      </div>
+
+      <!-- ABOUT -->
+      <div id="about" class="tab-content">
+        <h2 class="section-title">Despre WebCraft Pro</h2>
+        <div style="background:rgba(255,255,255,.9);border-radius:15px;padding:3rem;margin:2rem 0">
+          <h3 style="text-align:center;margin-bottom:2rem">Cine Suntem</h3>
+          <p style="font-size:1.1rem;line-height:1.8;margin-bottom:2rem"><strong>WebCraft Pro</strong> este o echipă tânără de dezvoltatori web pasionați de tehnologie. Fondată în 2022, livrăm soluții moderne și accesibile.</p>
+          <p style="font-size:1.1rem;line-height:1.8;margin-bottom:2rem">Oferim servicii de calitate la prețuri competitive. Fiecare proiect este tratat cu atenție la detalii.</p>
+        </div>
+        <h3 style="color:#fff;text-align:center;margin:2rem 0">Echipa Noastră</h3>
+        <div class="services-grid">
+          <div class="service-card" style="text-align:center">
+            <div style="width:80px;height:80px;background:linear-gradient(45deg,#667eea,#764ba2);border-radius:50%;margin:0 auto 1rem;display:flex;align-items:center;justify-content:center;color:#fff;font-size:2rem">👨‍💻</div>
+            <h4>Alexandru Popescu</h4><p><strong>Full Stack Developer & Fondator</strong></p><p>Experiență în PHP, JavaScript și aplicații web complexe.</p>
+          </div>
+          <div class="service-card" style="text-align:center">
+            <div style="width:80px;height:80px;background:linear-gradient(45deg,#667eea,#764ba2);border-radius:50%;margin:0 auto 1rem;display:flex;align-items:center;justify-content:center;color:#fff;font-size:2rem">🎨</div>
+            <h4>Maria Ionescu</h4><p><strong>UI/UX Designer</strong></p><p>Design modern, experiență de utilizare și interfețe intuitive.</p>
+          </div>
+          <div class="service-card" style="text-align:center">
+            <div style="width:80px;height:80px;background:linear-gradient(45deg,#667eea,#764ba2);border-radius:50%;margin:0 auto 1rem;display:flex;align-items:center;justify-content:center;color:#fff;font-size:2rem">🔧</div>
+            <h4>Cristian Dumitrescu</h4><p><strong>DevOps</strong></p><p>Responsabil cu hosting, securitate și mentenanță.</p>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- MODAL PREVIEW -->
+  <div class="modal" id="demoModal" aria-hidden="true" role="dialog" aria-labelledby="demoTitle">
+    <div class="modal-dialog">
+      <div class="modal-header">
+        <div id="demoTitle" class="modal-title">Preview</div>
+        <button class="modal-close" id="closeModal" aria-label="Închide (Esc)">Închide</button>
+      </div>
+      <div class="modal-body">
+        <iframe class="modal-iframe" id="demoFrame" title="Demo preview"></iframe>
+      </div>
+    </div>
+  </div>
+
+<script>
+  // EmailJS init
+  (function(){ emailjs.init("2NkPRAueoBp3VEeIZ"); })();
+
+  // Tabs & mobile menu
+  const navMenu = document.getElementById('navMenu');
+  const mobileToggle = document.getElementById('mobileToggle');
+  const logoLink = document.getElementById('logoLink');
+
+  function closeMobileMenu(){
+    navMenu.classList.remove('mobile-active');
+    mobileToggle.classList.remove('active');
+    mobileToggle.setAttribute('aria-expanded','false');
+  }
+  function toggleMobileMenu(){
+    navMenu.classList.toggle('mobile-active');
+    mobileToggle.classList.toggle('active');
+    mobileToggle.setAttribute('aria-expanded', navMenu.classList.contains('mobile-active') ? 'true':'false');
+  }
+  mobileToggle.addEventListener('click', toggleMobileMenu);
+
+  function showTab(tabName, clickedEl){
+    document.querySelectorAll('.tab-content').forEach(t=>t.classList.remove('active'));
+    document.querySelectorAll('.nav-menu li').forEach(i=>i.classList.remove('active'));
+    const target = document.getElementById(tabName);
+    if(target) target.classList.add('active');
+    if(clickedEl) clickedEl.classList.add('active');
+    closeMobileMenu();
+    window.scrollTo({top:0,behavior:'smooth'});
+  }
+
+  // Logo click handler - navigate to home
+  logoLink.addEventListener('click', () => {
+    const homeNavItem = document.querySelector('.nav-menu li[data-tab="home"]');
+    showTab('home', homeNavItem);
+  });
+
+  navMenu.addEventListener('click', (e)=>{
+    const li = e.target.closest('li');
+    if(!li) return;
+    const tab = li.getAttribute('data-tab');
+    if(tab) showTab(tab, li);
+  });
+
+  document.querySelectorAll('.nav-link').forEach(a=>{
+    a.addEventListener('click', (e)=>{
+      e.preventDefault();
+      const tab = a.getAttribute('data-tab');
+      const navItem = document.querySelector('.nav-menu li[data-tab="'+tab+'"]');
+      showTab(tab, navItem);
+    });
+  });
+
+  // Pricing buttons handler - navigate to contact with service pre-selected
+  document.querySelectorAll('.pricing-button').forEach(button => {
+    button.addEventListener('click', (e) => {
+      e.preventDefault();
+      const serviceType = button.getAttribute('data-service');
+      
+      // Navigate to contact tab
+      const contactNavItem = document.querySelector('.nav-menu li[data-tab="contact"]');
+      showTab('contact', contactNavItem);
+      
+      // Pre-select the service in the dropdown
+      setTimeout(() => {
+        const serviceSelect = document.getElementById('service');
+        if (serviceSelect && serviceType) {
+          serviceSelect.value = serviceType;
+          serviceSelect.focus();
         }
+      }, 100);
+    });
+  });
 
-        // Adăugare în coș
-        function addToCart(productId) {
-            const product = products.find(p => p.id === productId);
-            const existingItem = cart.find(item => item.id === productId);
-            
-            if (existingItem) {
-                existingItem.quantity += 1;
-            } else {
-                cart.push({ ...product, quantity: 1 });
-            }
-            
-            updateCartUI();
-            showNotification(`${product.name} adăugată în coș!`);
-        }
+  document.addEventListener('click',(e)=>{
+    if(!navMenu.contains(e.target) && !mobileToggle.contains(e.target)) closeMobileMenu();
+  });
+  window.addEventListener('resize',()=>{ if(window.innerWidth>768) closeMobileMenu(); });
 
-        // Update coș UI
-        function updateCartUI() {
-            const cartCount = document.getElementById('cartCount');
-            const totalItems = cart.reduce((sum, item) => sum + item.quantity, 0);
-            cartCount.textContent = totalItems;
-            
-            renderCartItems();
-            updateCartTotal();
-        }
+  // Form
+  document.getElementById('contactForm').addEventListener('submit', function(event){
+    event.preventDefault();
+    const submitBtn = this.querySelector('button[type="submit"]');
+    const originalText = submitBtn.innerHTML;
+    submitBtn.innerHTML = '⏳ Se trimite...';
+    submitBtn.disabled = true;
+    emailjs.sendForm('service_8hm6jie','template_qwy63lm', this).then(()=>{
+      submitBtn.innerHTML = '✅ Trimis cu succes!';
+      submitBtn.style.background = 'linear-gradient(45deg,#27ae60,#229954)';
+      alert('✅ Mulțumim! Îți vom răspunde în maxim 24 de ore.');
+      this.reset();
+      setTimeout(()=>{ submitBtn.innerHTML=originalText; submitBtn.style.background='linear-gradient(45deg,#ee5a24,#ff6b6b)'; submitBtn.disabled=false; },3000);
+    },(error)=>{
+      console.log('EmailJS Error:', error);
+      submitBtn.innerHTML='📧 Deschide Email';
+      submitBtn.style.background='linear-gradient(45deg,#f39c12,#e67e22)';
+      const fd = new FormData(this);
+      const subject = `Solicitare Oferta WebCraft Pro - ${fd.get('service')}`;
+      const body = `Solicitare ofertă de la: ${fd.get('name')}
 
-        // Afișare items din coș
-        function renderCartItems() {
-            const cartItems = document.getElementById('cartItems');
-            const checkoutSection = document.getElementById('checkoutSection');
-            
-            if (cart.length === 0) {
-                cartItems.innerHTML = '<div class="empty-cart">Coșul este gol<br>🛒 Adaugă produse pentru a continua</div>';
-                checkoutSection.style.display = 'none';
-                return;
-            }
-            
-            checkoutSection.style.display = 'block';
-            cartItems.innerHTML = cart.map(item => `
-                <div class="cart-item">
-                    <div class="cart-item-info">
-                        <div style="font-weight: bold;">${item.name}</div>
-                        <div style="color: #666;">${item.price} RON / bucată</div>
-                    </div>
-                    <div class="cart-item-controls">
-                        <button class="quantity-btn" onclick="updateQuantity(${item.id}, -1)">-</button>
-                        <span class="quantity">${item.quantity}</span>
-                        <button class="quantity-btn" onclick="updateQuantity(${item.id}, 1)">+</button>
-                        <button class="remove-btn" onclick="removeFromCart(${item.id})">Elimină</button>
-                    </div>
-                </div>
-            `).join('');
-        }
+DETALII CLIENT:
+- Nume: ${fd.get('name')}
+- Email: ${fd.get('email')}
+- Telefon: ${fd.get('phone')||'Nu a fost specificat'}
+- Companie: ${fd.get('company')||'Nu a fost specificată'}
 
-        // Update cantitate
-        function updateQuantity(productId, change) {
-            const item = cart.find(item => item.id === productId);
-            if (item) {
-                item.quantity += change;
-                if (item.quantity <= 0) {
-                    removeFromCart(productId);
-                } else {
-                    updateCartUI();
-                }
-            }
-        }
+DETALII PROIECT:
+- Serviciu solicitat: ${fd.get('service')}
+- Buget estimat: ${fd.get('budget')||'Nu a fost specificat'}
+- Deadline dorit: ${fd.get('deadline')||'Nu a fost specificat'}
 
-        // Eliminare din coș
-        function removeFromCart(productId) {
-            cart = cart.filter(item => item.id !== productId);
-            updateCartUI();
-        }
+DESCRIEREA PROIECTULUI:
+${fd.get('message')}`;
+      window.location.href=`mailto:ericandrei007@gmail.com?subject=${encodeURIComponent(subject)}&body=${encodeURIComponent(body)}`;
+      alert('Se va deschide clientul tău de email pentru a trimite mesajul.');
+      setTimeout(()=>{ submitBtn.innerHTML=originalText; submitBtn.style.background='linear-gradient(45deg,#ee5a24,#ff6b6b)'; submitBtn.disabled=false; },3000);
+    });
+  });
 
-        // Calculare total
-        function updateCartTotal() {
-            const subtotal = cart.reduce((sum, item) => sum + (item.price * item.quantity), 0);
-            const shipping = subtotal >= 200 ? 0 : 25; // Transport gratuit peste 200 RON
-            const total = subtotal + shipping;
-            
-            document.getElementById('cartTotal').innerHTML = `
-                <div>Subtotal: ${subtotal} RON</div>
-                <div>Transport: ${shipping === 0 ? 'Gratuit' : shipping + ' RON'}</div>
-                <div style="border-top: 2px solid #764ba2; padding-top: 0.5rem; margin-top: 0.5rem;">
-                    <strong>Total: ${total} RON</strong>
-                </div>
-            `;
-        }
+  // Scroll reveal
+  window.addEventListener('scroll',()=>{
+    document.querySelectorAll('.service-card,.pricing-card,.portfolio-item').forEach(el=>{
+      const top = el.getBoundingClientRect().top;
+      if(top < window.innerHeight - 150){ el.style.opacity='1'; el.style.transform='translateY(0)'; }
+    });
+  });
+  document.addEventListener('DOMContentLoaded',()=>{
+    document.querySelectorAll('.service-card,.pricing-card,.portfolio-item').forEach(el=>{
+      el.style.opacity='0'; el.style.transform='translateY(20px)'; el.style.transition='opacity .6s ease, transform .6s ease';
+    });
+  });
 
-        // Toggle coș
-        function toggleCart() {
-            const modal = document.getElementById('cartModal');
-            modal.style.display = modal.style.display === 'block' ? 'none' : 'block';
-        }
+  // Demos pentru portofoliu (iframe srcdoc)
+  const DEMOS = {
+    restaurant:`<!DOCTYPE html><html><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1"><title>Model Restaurant</title><style>body{font-family:system-ui,Arial,sans-serif;margin:0}header{padding:24px;background:#111;color:#fff;display:flex;justify-content:space-between;align-items:center}nav a{color:#fff;text-decoration:none;margin:0 10px}.hero{display:grid;place-items:center;height:40vh;background:linear-gradient(135deg,#ff9966,#ff5e62);color:#fff;text-align:center}.grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(200px,1fr));gap:16px;margin:24px;padding:0 12px}.card{border:1px solid #eee;border-radius:12px;overflow:hidden;box-shadow:0 4px 16px rgba(0,0,0,.06)}.img{height:140px;background:linear-gradient(45deg,#ff9a9e,#fecfef);display:grid;place-items:center;color:#fff}.card h4{margin:12px}.cta{display:inline-block;margin:16px;background:#111;color:#fff;padding:10px 16px;border-radius:8px;text-decoration:none}footer{padding:16px;text-align:center;border-top:1px solid #eee}</style></head><body><header><strong>La Bunicii</strong><nav><a href="#">Meniu</a><a href="#">Rezervări</a><a href="#">Contact</a></nav></header><section class="hero"><div><h1>Bun venit!</h1><p>Mâncare ca la bunica acasă.</p></div></section><section class="grid"><div class="card"><div class="img">🍲</div><h4>Ciorbă de perișoare</h4></div><div class="card"><div class="img">🍖</div><h4>Sarmale</h4></div><div class="card"><div class="img">🥗</div><h4>Salată de vinete</h4></div><div class="card"><div class="img">🍰</div><h4>Cheesecake</h4></div></section><div style="text-align:center"><a class="cta" href="#">Rezervă o masă</a></div><footer>© Restaurant La Bunicii</footer></body></html>`,
+    clinic:`<!DOCTYPE html><html><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1"><title>Model Clinică</title><style>body{font-family:system-ui;margin:0}header{padding:20px;background:#0d47a1;color:#fff;display:flex;justify-content:space-between}.hero{padding:50px 20px;background:#e3f2fd;text-align:center}.grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(220px,1fr));gap:16px;margin:20px}.card{padding:16px;border:1px solid #e0e0e0;border-radius:10px;background:#fff}.cta{display:inline-block;background:#0d47a1;color:#fff;padding:10px 16px;border-radius:8px;text-decoration:none;margin-top:10px}</style></head><body><header><strong>ProDent</strong><nav>☎ 021 000 0000</nav></header><section class="hero"><h1>Zâmbet sănătos</h1><p>Programați o consultație în 60 de secunde.</p><a href="#" class="cta">Programează-te</a></section><section class="grid"><div class="card"><h3>Detartraj</h3><p>Curățare profesională</p></div><div class="card"><h3>Albire</h3><p>Proceduri moderne</p></div><div class="card"><h3>Implant</h3><p>Specialiști certificați</p></div><div class="card"><h3>Urgențe</h3><p>Intervenim rapid</p></div></section></body></html>`,
+    shop:`<!DOCTYPE html><html><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1"><title>Model Magazin</title><style>body{font-family:system-ui;margin:0}header{padding:16px;background:#1b5e20;color:#fff;display:flex;justify-content:space-between}.filters{padding:12px;background:#e8f5e9;display:flex;gap:10px;flex-wrap:wrap}.grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(180px,1fr));gap:16px;margin:16px}.card{border:1px solid #e0e0e0;border-radius:10px;overflow:hidden}.img{height:120px;background:linear-gradient(45deg,#66bb6a,#43a047);display:grid;place-items:center;color:#fff}.card h4{margin:10px}.price{margin:0 10px 10px;font-weight:600}.btn{display:block;margin:10px;background:#1b5e20;color:#fff;text-align:center;padding:8px;border-radius:6px;text-decoration:none}</style></head><body><header><strong>TechGear</strong><div>🛒 Coș (0)</div></header><div class="filters"><input placeholder="Caută..."/><select><option>Toate categoriile</option><option>Laptopuri</option><option>Componente</option></select></div><div class="grid"><div class="card"><div class="img">🎧</div><h4>Căști Pro</h4><div class="price">199 RON</div><a class="btn" href="#">Adaugă în coș</a></div><div class="card"><div class="img">⌨️</div><h4>Tastatură RGB</h4><div class="price">249 RON</div><a class="btn" href="#">Adaugă în coș</a></div><div class="card"><div class="img">🖱️</div><h4>Mous Pro</h4><div class="price">149 RON</div><a class="btn" href="#">Adaugă în coș</a></div><div class="card"><div class="img">💻</div><h4>Laptop X</h4><div class="price">2999 RON</div><a class="btn" href="#">Adaugă în coș</a></div></div></body></html>`,
+    realestate:`<!DOCTYPE html><html><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1"><title>Model Imobiliar</title><style>body{font-family:system-ui;margin:0}header{padding:16px;background:#6d4c41;color:#fff;display:flex;justify-content:space-between}.search{display:flex;gap:10px;padding:16px;background:#efebe9;flex-wrap:wrap}input,select{padding:10px;border:1px solid #ccc;border-radius:8px}.grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(220px,1fr));gap:16px;margin:16px}.card{border:1px solid #ddd;border-radius:12px;overflow:hidden}.img{height:140px;background:linear-gradient(45deg,#a1887f,#8d6e63);display:grid;place-items:center;color:#fff}.meta{display:flex;justify-content:space-between;margin:8px 10px 14px}</style></head><body><header><strong>CasaMea</strong><div>🏠 Proprietăți</div></header><div class="search"><input placeholder="Oraș"/><select><option>Tip: Orice</option><option>Apartament</option><option>Casă</option></select><select><option>Buget</option><option>&lt; 100k</option><option>100-200k</option></select><button>Caută</button></div><div class="grid"><div class="card"><div class="img">📷</div><h4 style="margin:10px">Apartament 2 cam.</h4><div class="meta"><span>78.000€</span><span>Cluj</span></div></div><div class="card"><div class="img">📷</div><h4 style="margin:10px">Casă 4 cam.</h4><div class="meta"><span>185.000€</span><span>București</span></div></div><div class="card"><div class="img">📷</div><h4 style="margin:10px">Garsonieră</h4><div class="meta"><span>52.000€</span><span>Timișoara</span></div></div></div></body></html>`,
+    beauty:`<!DOCTYPE html><html><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1"><title>Model Salon</title><style>body{font-family:system-ui;margin:0}header{padding:18px;background:#8e24aa;color:#fff;display:flex;justify-content:space-between}.hero{padding:40px 20px;background:#f3e5f5;text-align:center}.grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(200px,1fr));gap:16px;margin:20px}.card{border:1px solid #e0e0e0;border-radius:12px;padding:16px;background:#fff}.btn{display:inline-block;background:#8e24aa;color:#fff;padding:8px 14px;border-radius:8px;text-decoration:none;margin-top:8px}</style></head><body><header><strong>Bella</strong><div>📅 Rezervă</div></header><section class="hero"><h1>Răsfață-te</h1><p>Pachete pentru păr, unghii, make-up.</p></section><section class="grid"><div class="card"><h3>Tuns & Coafat</h3><p>De la 90 RON</p><a href="#" class="btn">Rezervă</a></div><div class="card"><h3>Manichiură</h3><p>De la 70 RON</p><a href="#" class="btn">Rezervă</a></div><div class="card"><h3>Machiaj</h3><p>De la 120 RON</p><a href="#" class="btn">Rezervă</a></div></section></body></html>`,
+    accounting:`<!DOCTYPE html><html><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1"><title>Model Contabilitate</title><style>body{font-family:system-ui;margin:0}header{padding:18px;background:#1565c0;color:#fff;display:flex;justify-content:space-between}.hero{padding:40px 20px;background:#e3f2fd}.grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(220px,1fr));gap:16px;margin:20px}.card{border:1px solid #e0e0e0;border-radius:12px;padding:16px;background:#fff}</style></head><body><header><strong>ExpertCont</strong><div>📩 Contact rapid</div></header><section class="hero"><h1>Contabilitate fără griji</h1><p>Servicii complete pentru IMM.</p></section><section class="grid"><div class="card"><h3>Primare</h3><p>Înregistrări, balanțe, declarații.</p></div><div class="card"><h3>Salarizare</h3><p>State salarii, Revisal.</p></div><div class="card"><h3>Consultanță</h3><p>Optimizare fiscală.</p></div></section></body></html>`
+  };
 
-        // Selectare metoda de plată
-        function selectPayment(method) {
-            selectedPayment = method;
-            document.querySelectorAll('.payment-btn').forEach(btn => btn.classList.remove('selected'));
-            
-            const btnMap = {
-                'card': 'cardBtn',
-                'payu': 'payuBtn',
-                'googlepay': 'googlePayBtn',
-                'ramburs': 'rambursBtn'
-            };
-            
-            document.getElementById(btnMap[method]).classList.add('selected');
-        }
+  const modal = document.getElementById('demoModal');
+  const frame = document.getElementById('demoFrame');
+  const closeBtn = document.getElementById('closeModal');
 
-        // Validare formular
-        function validateForm() {
-            const required = ['firstName', 'lastName', 'email', 'phone', 'address', 'city'];
-            let isValid = true;
-            
-            required.forEach(field => {
-                const input = document.getElementById(field);
-                if (!input.value.trim()) {
-                    input.style.borderColor = '#ff4757';
-                    isValid = false;
-                } else {
-                    input.style.borderColor = '#ddd';
-                }
-            });
-            
-            // Validare email
-            const email = document.getElementById('email').value;
-            const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
-            if (!emailRegex.test(email)) {
-                document.getElementById('email').style.borderColor = '#ff4757';
-                isValid = false;
-            }
-            
-            return isValid;
-        }
+  function openDemo(name, title){
+    frame.setAttribute('srcdoc', DEMOS[name] || '<h1 style="font-family:system-ui">Demo indisponibil</h1>');
+    document.getElementById('demoTitle').textContent = 'Preview: ' + (title || name);
+    modal.classList.add('open');
+    modal.setAttribute('aria-hidden','false');
+    document.body.style.overflow='hidden';
+  }
+  function closeDemo(){
+    modal.classList.remove('open');
+    modal.setAttribute('aria-hidden','true');
+    document.body.style.overflow='';
+    frame.setAttribute('srcdoc','');
+  }
+  closeBtn.addEventListener('click', closeDemo);
+  document.addEventListener('keydown', (e)=>{ if(e.key==='Escape') closeDemo(); });
+  modal.addEventListener('click', (e)=>{ if(e.target===modal) closeDemo(); });
 
-        // Procesare plată
-        function processPayment() {
-            if (!selectedPayment) {
-                showError('Te rugăm să selectezi o metodă de plată!');
-                return;
-            }
-            
-            if (cart.length === 0) {
-                showError('Coșul este gol!');
-                return;
-            }
-            
-            if (!validateForm()) {
-                showError('Te rugăm să completezi toate câmpurile obligatorii corect!');
-                return;
-            }
-            
-            // Afișare loading
-            document.getElementById('loadingMessage').style.display = 'block';
-            
-            // Creeare obiect comandă
-            const orderData = {
-                products: cart,
-                customer: {
-                    firstName: document.getElementById('firstName').value,
-                    lastName: document.getElementById('lastName').value,
-                    email: document.getElementById('email').value,
-                    phone: document.getElementById('phone').value,
-                    address: document.getElementById('address').value,
-                    city: document.getElementById('city').value,
-                    zipCode: document.getElementById('zipCode').value
-                },
-                paymentMethod: selectedPayment,
-                total: cart.reduce((sum, item) => sum + (item.price * item.quantity), 0),
-                timestamp: new Date().toISOString()
-            };
-            
-            // Simulare procesare plată (în realitate ai integra cu PayU/Stripe)
-            setTimeout(() => {
-                document.getElementById('loadingMessage').style.display = 'none';
-                
-                if (selectedPayment === 'payu') {
-                    // Simulare redirect PayU
-                    processPayUPayment(orderData);
-                } else if (selectedPayment === 'googlepay') {
-                    // Simulare Google Pay
-                    processGooglePay(orderData);
-                } else {
-                    // Alte metode (card direct, ramburs)
-                    completeOrder(orderData);
-                }
-            }, 2000);
-        }
-
-        // Simulare PayU
-        function processPayUPayment(orderData) {
-            // În realitate ai trimite datele către PayU
-            console.log('PayU Order:', orderData);
-            
-            // Pentru demo, simulez succesul
-            setTimeout(() => {
-                completeOrder(orderData);
-            }, 1000);
-        }
-
-        // Simulare Google Pay  
-        function processGooglePay(orderData) {
-            console.log('Google Pay Order:', orderData);
-            
-            // Pentru demo
-            setTimeout(() => {
-                completeOrder(orderData);
-            }, 1000);
-        }
-
-        // Finalizare comandă
-        function completeOrder(orderData) {
-            // Salvare comandă (în realitate în baza de date)
-            console.log('Comandă finalizată:', orderData);
-            
-            // Afișare mesaj succes
-            document.getElementById('successMessage').style.display = 'block';
-            
-            // Resetare coș
-            cart = [];
-            selectedPayment = null;
-            updateCartUI();
-            
-            // Resetare formular
-            document.querySelectorAll('input').forEach(input => input.value = '');
-            document.querySelectorAll('.payment-btn').forEach(btn => btn.classList.remove('selected'));
-            
-            // Închidere automată după 5 secunde
-            setTimeout(() => {
-                document.getElementById('successMessage').style.display = 'none';
-                toggleCart();
-            }, 5000);
-        }
-
-        // Afișare eroare
-        function showError(message) {
-            const errorDiv = document.getElementById('errorMessage');
-            errorDiv.textContent = message;
-            errorDiv.style.display = 'block';
-            
-            setTimeout(() => {
-                errorDiv.style.display = 'none';
-            }, 5000);
-        }
-
-        // Notificare
-        function showNotification(message) {
-            const notification = document.getElementById('notification');
-            notification.textContent = message;
-            notification.classList.add('show');
-            
-            setTimeout(() => {
-                notification.classList.remove('show');
-            }, 3000);
-        }
-
-        // Click afară pentru închidere modal
-        document.getElementById('cartModal').addEventListener('click', function(e) {
-            if (e.target === this) {
-                toggleCart();
-            }
-        });
-
-        // Keyboard navigation
-        document.addEventListener('keydown', function(e) {
-            if (e.key === 'Escape') {
-                const modal = document.getElementById('cartModal');
-                if (modal.style.display === 'block') {
-                    toggleCart();
-                }
-            }
-        });
-
-        // Inițializare
-        document.addEventListener('DOMContentLoaded', function() {
-            renderProducts();
-            
-            // Simulare încărcare
-            const loadingElements = document.querySelectorAll('.product-card');
-            loadingElements.forEach((el, index) => {
-                el.style.opacity = '0';
-                el.style.transform = 'translateY(20px)';
-                
-                setTimeout(() => {
-                    el.style.transition = 'all 0.5s ease';
-                    el.style.opacity = '1';
-                    el.style.transform = 'translateY(0)';
-                }, index * 100);
-            });
-        });
-
-        // Integrare PayU reală (pentru implementare viitoare)
-        function initializePayU() {
-            // Configurare PayU pentru România
-            const payuConfig = {
-                merchant: 'YOUR_MERCHANT_ID', // Obții de la PayU
-                key: 'YOUR_SECRET_KEY',
-                environment: 'sandbox', // sau 'production'
-                currency: 'RON'
-            };
-            
-            // Acest cod va fi folosit când obții cont PayU real
-            return payuConfig;
-        }
-
-        // Analytics și tracking (opțional)
-        function trackEvent(eventName, data) {
-            // Google Analytics, Facebook Pixel, etc.
-            console.log('Track:', eventName, data);
-            
-            // Exemplu pentru viitor:
-            // gtag('event', eventName, data);
-        }
-
-        // Tracking la adăugare în coș
-        function addToCartWithTracking(productId) {
-            addToCart(productId);
-            const product = products.find(p => p.id === productId);
-            trackEvent('add_to_cart', {
-                item_id: product.id,
-                item_name: product.name,
-                value: product.price,
-                currency: 'RON'
-            });
-        }
-    </script>
+  document.querySelectorAll('.portfolio-item').forEach(card=>{
+    card.addEventListener('click', ()=>{
+      const key = card.getAttribute('data-demo');
+      const title = card.querySelector('h3')?.textContent || '';
+      openDemo(key, title);
+    });
+  });
+</script>
 </body>
 </html>
