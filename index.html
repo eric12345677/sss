@@ -427,104 +427,105 @@
   </div>
 
 <script>
-  // EmailJS init
-  (function(){ emailjs.init("2NkPRAueoBp3VEeIZ"); })();
+document.addEventListener('DOMContentLoaded', function() {
+    // EmailJS init
+    (function(){ emailjs.init("2NkPRAueoBp3VEeIZ"); })();
 
-  // Tabs & mobile menu
-  const navMenu = document.getElementById('navMenu');
-  const mobileToggle = document.getElementById('mobileToggle');
-  const logoLink = document.getElementById('logoLink');
+    // Tabs & mobile menu
+    const navMenu = document.getElementById('navMenu');
+    const mobileToggle = document.getElementById('mobileToggle');
+    const logoLink = document.getElementById('logoLink');
 
-  function closeMobileMenu(){
-    navMenu.classList.remove('mobile-active');
-    mobileToggle.classList.remove('active');
-    mobileToggle.setAttribute('aria-expanded','false');
-  }
-  function toggleMobileMenu(){
-    navMenu.classList.toggle('mobile-active');
-    mobileToggle.classList.toggle('active');
-    mobileToggle.setAttribute('aria-expanded', navMenu.classList.contains('mobile-active') ? 'true':'false');
-  }
-  mobileToggle.addEventListener('click', toggleMobileMenu);
+    function closeMobileMenu(){
+      navMenu.classList.remove('mobile-active');
+      mobileToggle.classList.remove('active');
+      mobileToggle.setAttribute('aria-expanded','false');
+    }
+    function toggleMobileMenu(){
+      navMenu.classList.toggle('mobile-active');
+      mobileToggle.classList.toggle('active');
+      mobileToggle.setAttribute('aria-expanded', navMenu.classList.contains('mobile-active') ? 'true':'false');
+    }
+    mobileToggle.addEventListener('click', toggleMobileMenu);
 
-  function showTab(tabName, clickedEl){
-    document.querySelectorAll('.tab-content').forEach(t=>t.classList.remove('active'));
-    document.querySelectorAll('.nav-menu li').forEach(i=>i.classList.remove('active'));
-    const target = document.getElementById(tabName);
-    if(target) target.classList.add('active');
-    if(clickedEl) clickedEl.classList.add('active');
-    closeMobileMenu();
-    window.scrollTo({top:0,behavior:'smooth'});
-  }
+    function showTab(tabName, clickedEl){
+      document.querySelectorAll('.tab-content').forEach(t=>t.classList.remove('active'));
+      document.querySelectorAll('.nav-menu li').forEach(i=>i.classList.remove('active'));
+      const target = document.getElementById(tabName);
+      if(target) target.classList.add('active');
+      if(clickedEl) clickedEl.classList.add('active');
+      closeMobileMenu();
+      window.scrollTo({top:0,behavior:'smooth'});
+    }
 
-  // Logo click handler - navigate to home
-  logoLink.addEventListener('click', () => {
-    const homeNavItem = document.querySelector('.nav-menu li[data-tab="home"]');
-    showTab('home', homeNavItem);
-  });
-
-  navMenu.addEventListener('click', (e)=>{
-    const li = e.target.closest('li');
-    if(!li) return;
-    const tab = li.getAttribute('data-tab');
-    if(tab) showTab(tab, li);
-  });
-
-  document.querySelectorAll('.nav-link').forEach(a=>{
-    a.addEventListener('click', (e)=>{
-      e.preventDefault();
-      const tab = a.getAttribute('data-tab');
-      const navItem = document.querySelector('.nav-menu li[data-tab="'+tab+'"]');
-      showTab(tab, navItem);
+    // Logo click handler - navigate to home
+    logoLink.addEventListener('click', () => {
+      const homeNavItem = document.querySelector('.nav-menu li[data-tab="home"]');
+      showTab('home', homeNavItem);
     });
-  });
 
-  // Pricing buttons handler - navigate to contact with service pre-selected
-  document.querySelectorAll('.pricing-button').forEach(button => {
-    button.addEventListener('click', (e) => {
-      e.preventDefault();
-      const serviceType = button.getAttribute('data-service');
-      
-      // Navigate to contact tab
-      const contactNavItem = document.querySelector('.nav-menu li[data-tab="contact"]');
-      showTab('contact', contactNavItem);
-      
-      // Pre-select the service in the dropdown
-      setTimeout(() => {
-        const serviceSelect = document.getElementById('service');
-        if (serviceSelect && serviceType) {
-          serviceSelect.value = serviceType;
-          serviceSelect.focus();
-        }
-      }, 100);
+    navMenu.addEventListener('click', (e)=>{
+      const li = e.target.closest('li');
+      if(!li) return;
+      const tab = li.getAttribute('data-tab');
+      if(tab) showTab(tab, li);
     });
-  });
 
-  document.addEventListener('click',(e)=>{
-    if(!navMenu.contains(e.target) && !mobileToggle.contains(e.target)) closeMobileMenu();
-  });
-  window.addEventListener('resize',()=>{ if(window.innerWidth>768) closeMobileMenu(); });
+    document.querySelectorAll('.nav-link').forEach(a=>{
+      a.addEventListener('click', (e)=>{
+        e.preventDefault();
+        const tab = a.getAttribute('data-tab');
+        const navItem = document.querySelector('.nav-menu li[data-tab="'+tab+'"]');
+        showTab(tab, navItem);
+      });
+    });
 
-  // Form
-  document.getElementById('contactForm').addEventListener('submit', function(event){
-    event.preventDefault();
-    const submitBtn = this.querySelector('button[type="submit"]');
-    const originalText = submitBtn.innerHTML;
-    submitBtn.innerHTML = '⏳ Se trimite...';
-    submitBtn.disabled = true;
-    emailjs.sendForm('service_8hm6jie','template_qwy63lm', this).then(()=>{
-      submitBtn.innerHTML = '✅ Trimis cu succes!';
-      submitBtn.style.background = 'linear-gradient(45deg,#27ae60,#229954)';
-      alert('✅ Mulțumim! Îți vom răspunde în maxim 24 de ore.');
-      this.reset();
-      setTimeout(()=>{ submitBtn.innerHTML=originalText; submitBtn.style.background='linear-gradient(45deg,#ee5a24,#ff6b6b)'; submitBtn.disabled=false; },3000);
-    },(error)=>{
-      console.log('EmailJS Error:', error);
-      submitBtn.innerHTML='📧 Deschide Email';
-      submitBtn.style.background='linear-gradient(45deg,#f39c12,#e67e22)';
-      const fd = new FormData(this);
-      const subject = `Solicitare Oferta WebCraft Pro - ${fd.get('service')}`;
-      const body = `Solicitare ofertă de la: ${fd.get('name')}
+    // Pricing buttons handler - navigate to contact with service pre-selected
+    document.querySelectorAll('.pricing-button').forEach(button => {
+      button.addEventListener('click', (e) => {
+        e.preventDefault();
+        const serviceType = button.getAttribute('data-service');
+        
+        // Navigate to contact tab
+        const contactNavItem = document.querySelector('.nav-menu li[data-tab="contact"]');
+        showTab('contact', contactNavItem);
+        
+        // Pre-select the service in the dropdown
+        setTimeout(() => {
+          const serviceSelect = document.getElementById('service');
+          if (serviceSelect && serviceType) {
+            serviceSelect.value = serviceType;
+            serviceSelect.focus();
+          }
+        }, 100);
+      });
+    });
+
+    document.addEventListener('click',(e)=>{
+      if(!navMenu.contains(e.target) && !mobileToggle.contains(e.target)) closeMobileMenu();
+    });
+    window.addEventListener('resize',()=>{ if(window.innerWidth>768) closeMobileMenu(); });
+
+    // Form
+    document.getElementById('contactForm').addEventListener('submit', function(event){
+      event.preventDefault();
+      const submitBtn = this.querySelector('button[type="submit"]');
+      const originalText = submitBtn.innerHTML;
+      submitBtn.innerHTML = '⏳ Se trimite...';
+      submitBtn.disabled = true;
+      emailjs.sendForm('service_8hm6jie','template_qwy63lm', this).then(()=>{
+        submitBtn.innerHTML = '✅ Trimis cu succes!';
+        submitBtn.style.background = 'linear-gradient(45deg,#27ae60,#229954)';
+        alert('✅ Mulțumim! Îți vom răspunde în maxim 24 de ore.');
+        this.reset();
+        setTimeout(()=>{ submitBtn.innerHTML=originalText; submitBtn.style.background='linear-gradient(45deg,#ee5a24,#ff6b6b)'; submitBtn.disabled=false; },3000);
+      },(error)=>{
+        console.log('EmailJS Error:', error);
+        submitBtn.innerHTML='📧 Deschide Email';
+        submitBtn.style.background='linear-gradient(45deg,#f39c12,#e67e22)';
+        const fd = new FormData(this);
+        const subject = `Solicitare Oferta WebCraft Pro - ${fd.get('service')}`;
+        const body = `Solicitare ofertă de la: ${fd.get('name')}
 
 DETALII CLIENT:
 - Nume: ${fd.get('name')}
@@ -539,63 +540,71 @@ DETALII PROIECT:
 
 DESCRIEREA PROIECTULUI:
 ${fd.get('message')}`;
-      window.location.href=`mailto:ericandrei007@gmail.com?subject=${encodeURIComponent(subject)}&body=${encodeURIComponent(body)}`;
-      alert('Se va deschide clientul tău de email pentru a trimite mesajul.');
-      setTimeout(()=>{ submitBtn.innerHTML=originalText; submitBtn.style.background='linear-gradient(45deg,#ee5a24,#ff6b6b)'; submitBtn.disabled=false; },3000);
+        window.location.href=`mailto:ericandrei007@gmail.com?subject=${encodeURIComponent(subject)}&body=${encodeURIComponent(body)}`;
+        alert('Se va deschide clientul tău de email pentru a trimite mesajul.');
+        setTimeout(()=>{ submitBtn.innerHTML=originalText; submitBtn.style.background='linear-gradient(45deg,#ee5a24,#ff6b6b)'; submitBtn.disabled=false; },3000);
+      });
     });
-  });
 
-  // Scroll reveal
-  window.addEventListener('scroll',()=>{
-    document.querySelectorAll('.service-card,.pricing-card,.portfolio-item').forEach(el=>{
-      const top = el.getBoundingClientRect().top;
-      if(top < window.innerHeight - 150){ el.style.opacity='1'; el.style.transform='translateY(0)'; }
+    // Scroll reveal
+    const revealElements = document.querySelectorAll('.service-card,.pricing-card,.portfolio-item');
+    revealElements.forEach(el=>{
+      el.style.opacity='0';
+      el.style.transform='translateY(20px)';
+      el.style.transition='opacity .6s ease, transform .6s ease';
     });
-  });
-  document.addEventListener('DOMContentLoaded',()=>{
-    document.querySelectorAll('.service-card,.pricing-card,.portfolio-item').forEach(el=>{
-      el.style.opacity='0'; el.style.transform='translateY(20px)'; el.style.transition='opacity .6s ease, transform .6s ease';
+
+    function handleScrollReveal() {
+      revealElements.forEach(el=>{
+        const top = el.getBoundingClientRect().top;
+        if(top < window.innerHeight - 100){
+          el.style.opacity='1';
+          el.style.transform='translateY(0)';
+        }
+      });
+    }
+    window.addEventListener('scroll', handleScrollReveal);
+    handleScrollReveal(); // Run once on load
+
+    // Demos pentru portofoliu (iframe srcdoc)
+    const DEMOS = {
+      restaurant:`<!DOCTYPE html><html><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1"><title>Model Restaurant</title><style>body{font-family:system-ui,Arial,sans-serif;margin:0}header{padding:24px;background:#111;color:#fff;display:flex;justify-content:space-between;align-items:center}nav a{color:#fff;text-decoration:none;margin:0 10px}.hero{display:grid;place-items:center;height:40vh;background:linear-gradient(135deg,#ff9966,#ff5e62);color:#fff;text-align:center}.grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(200px,1fr));gap:16px;margin:24px;padding:0 12px}.card{border:1px solid #eee;border-radius:12px;overflow:hidden;box-shadow:0 4px 16px rgba(0,0,0,.06)}.img{height:140px;background:linear-gradient(45deg,#ff9a9e,#fecfef);display:grid;place-items:center;color:#fff}.card h4{margin:12px}.cta{display:inline-block;margin:16px;background:#111;color:#fff;padding:10px 16px;border-radius:8px;text-decoration:none}footer{padding:16px;text-align:center;border-top:1px solid #eee}</style></head><body><header><strong>La Bunicii</strong><nav><a href="#">Meniu</a><a href="#">Rezervări</a><a href="#">Contact</a></nav></header><section class="hero"><div><h1>Bun venit!</h1><p>Mâncare ca la bunica acasă.</p></div></section><section class="grid"><div class="card"><div class="img">🍲</div><h4>Ciorbă de perișoare</h4></div><div class="card"><div class="img">🍖</div><h4>Sarmale</h4></div><div class="card"><div class="img">🥗</div><h4>Salată de vinete</h4></div><div class="card"><div class="img">🍰</div><h4>Cheesecake</h4></div></section><div style="text-align:center"><a class="cta" href="#">Rezervă o masă</a></div><footer>© Restaurant La Bunicii</footer></body></html>`,
+      clinic:`<!DOCTYPE html><html><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1"><title>Model Clinică</title><style>body{font-family:system-ui;margin:0}header{padding:20px;background:#0d47a1;color:#fff;display:flex;justify-content:space-between}.hero{padding:50px 20px;background:#e3f2fd;text-align:center}.grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(220px,1fr));gap:16px;margin:20px}.card{padding:16px;border:1px solid #e0e0e0;border-radius:10px;background:#fff}.cta{display:inline-block;background:#0d47a1;color:#fff;padding:10px 16px;border-radius:8px;text-decoration:none;margin-top:10px}</style></head><body><header><strong>ProDent</strong><nav>☎ 021 000 0000</nav></header><section class="hero"><h1>Zâmbet sănătos</h1><p>Programați o consultație în 60 de secunde.</p><a href="#" class="cta">Programează-te</a></section><section class="grid"><div class="card"><h3>Detartraj</h3><p>Curățare profesională</p></div><div class="card"><h3>Albire</h3><p>Proceduri moderne</p></div><div class="card"><h3>Implant</h3><p>Specialiști certificați</p></div><div class="card"><h3>Urgențe</h3><p>Intervenim rapid</p></div></section></body></html>`,
+      shop:`<!DOCTYPE html><html><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1"><title>Model Magazin</title><style>body{font-family:system-ui;margin:0}header{padding:16px;background:#1b5e20;color:#fff;display:flex;justify-content:space-between}.filters{padding:12px;background:#e8f5e9;display:flex;gap:10px;flex-wrap:wrap}.grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(180px,1fr));gap:16px;margin:16px}.card{border:1px solid #e0e0e0;border-radius:10px;overflow:hidden}.img{height:120px;background:linear-gradient(45deg,#66bb6a,#43a047);display:grid;place-items:center;color:#fff}.card h4{margin:10px}.price{margin:0 10px 10px;font-weight:600}.btn{display:block;margin:10px;background:#1b5e20;color:#fff;text-align:center;padding:8px;border-radius:6px;text-decoration:none}</style></head><body><header><strong>TechGear</strong><div>🛒 Coș (0)</div></header><div class="filters"><input placeholder="Caută..."/><select><option>Toate categoriile</option><option>Laptopuri</option><option>Componente</option></select></div><div class="grid"><div class="card"><div class="img">🎧</div><h4>Căști Pro</h4><div class="price">199 RON</div><a class="btn" href="#">Adaugă în coș</a></div><div class="card"><div class="img">⌨️</div><h4>Tastatură RGB</h4><div class="price">249 RON</div><a class="btn" href="#">Adaugă în coș</a></div><div class="card"><div class="img">🖱️</div><h4>Mous Pro</h4><div class="price">149 RON</div><a class="btn" href="#">Adaugă în coș</a></div><div class="card"><div class="img">💻</div><h4>Laptop X</h4><div class="price">2999 RON</div><a class="btn" href="#">Adaugă în coș</a></div></div></body></html>`,
+      realestate:`<!DOCTYPE html><html><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1"><title>Model Imobiliar</title><style>body{font-family:system-ui;margin:0}header{padding:16px;background:#6d4c41;color:#fff;display:flex;justify-content:space-between}.search{display:flex;gap:10px;padding:16px;background:#efebe9;flex-wrap:wrap}input,select{padding:10px;border:1px solid #ccc;border-radius:8px}.grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(220px,1fr));gap:16px;margin:16px}.card{border:1px solid #ddd;border-radius:12px;overflow:hidden}.img{height:140px;background:linear-gradient(45deg,#a1887f,#8d6e63);display:grid;place-items:center;color:#fff}.meta{display:flex;justify-content:space-between;margin:8px 10px 14px}</style></head><body><header><strong>CasaMea</strong><div>🏠 Proprietăți</div></header><div class="search"><input placeholder="Oraș"/><select><option>Tip: Orice</option><option>Apartament</option><option>Casă</option></select><select><option>Buget</option><option>&lt; 100k</option><option>100-200k</option></select><button>Caută</button></div><div class="grid"><div class="card"><div class="img">📷</div><h4 style="margin:10px">Apartament 2 cam.</h4><div class="meta"><span>78.000€</span><span>Cluj</span></div></div><div class="card"><div class="img">📷</div><h4 style="margin:10px">Casă 4 cam.</h4><div class="meta"><span>185.000€</span><span>București</span></div></div><div class="card"><div class="img">📷</div><h4 style="margin:10px">Garsonieră</h4><div class="meta"><span>52.000€</span><span>Timișoara</span></div></div></div></body></html>`,
+      beauty:`<!DOCTYPE html><html><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1"><title>Model Salon</title><style>body{font-family:system-ui;margin:0}header{padding:18px;background:#8e24aa;color:#fff;display:flex;justify-content:space-between}.hero{padding:40px 20px;background:#f3e5f5;text-align:center}.grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(200px,1fr));gap:16px;margin:20px}.card{border:1px solid #e0e0e0;border-radius:12px;padding:16px;background:#fff}.btn{display:inline-block;background:#8e24aa;color:#fff;padding:8px 14px;border-radius:8px;text-decoration:none;margin-top:8px}</style></head><body><header><strong>Bella</strong><div>📅 Rezervă</div></header><section class="hero"><h1>Răsfață-te</h1><p>Pachete pentru păr, unghii, make-up.</p></section><section class="grid"><div class="card"><h3>Tuns & Coafat</h3><p>De la 90 RON</p><a href="#" class="btn">Rezervă</a></div><div class="card"><h3>Manichiură</h3><p>De la 70 RON</p><a href="#" class="btn">Rezervă</a></div><div class="card"><h3>Machiaj</h3><p>De la 120 RON</p><a href="#" class="btn">Rezervă</a></div></section></body></html>`,
+      accounting:`<!DOCTYPE html><html><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1"><title>Model Contabilitate</title><style>body{font-family:system-ui;margin:0}header{padding:18px;background:#1565c0;color:#fff;display:flex;justify-content:space-between}.hero{padding:40px 20px;background:#e3f2fd}.grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(220px,1fr));gap:16px;margin:20px}.card{border:1px solid #e0e0e0;border-radius:12px;padding:16px;background:#fff}</style></head><body><header><strong>ExpertCont</strong><div>📩 Contact rapid</div></header><section class="hero"><h1>Contabilitate fără griji</h1><p>Servicii complete pentru IMM.</p></section><section class="grid"><div class="card"><h3>Primare</h3><p>Înregistrări, balanțe, declarații.</p></div><div class="card"><h3>Salarizare</h3><p>State salarii, Revisal.</p></div><div class="card"><h3>Consultanță</h3><p>Optimizare fiscală.</p></div></section></body></html>`
+    };
+
+    const modal = document.getElementById('demoModal');
+    const frame = document.getElementById('demoFrame');
+    const closeBtn = document.getElementById('closeModal');
+
+    function openDemo(name, title){
+      frame.setAttribute('srcdoc', DEMOS[name] || '<h1 style="font-family:system-ui">Demo indisponibil</h1>');
+      document.getElementById('demoTitle').textContent = 'Preview: ' + (title || name);
+      modal.classList.add('open');
+      modal.setAttribute('aria-hidden','false');
+      document.body.style.overflow='hidden';
+    }
+    function closeDemo(){
+      modal.classList.remove('open');
+      modal.setAttribute('aria-hidden','true');
+      document.body.style.overflow='';
+      frame.setAttribute('srcdoc','');
+    }
+    closeBtn.addEventListener('click', closeDemo);
+    document.addEventListener('keydown', (e)=>{ if(e.key==='Escape') closeDemo(); });
+    modal.addEventListener('click', (e)=>{ if(e.target===modal) closeDemo(); });
+
+    document.querySelectorAll('.portfolio-item').forEach(card=>{
+      card.addEventListener('click', ()=>{
+        const key = card.getAttribute('data-demo');
+        const title = card.querySelector('h3')?.textContent || '';
+        openDemo(key, title);
+      });
     });
-  });
-
-  // Demos pentru portofoliu (iframe srcdoc)
-  const DEMOS = {
-    restaurant:`<!DOCTYPE html><html><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1"><title>Model Restaurant</title><style>body{font-family:system-ui,Arial,sans-serif;margin:0}header{padding:24px;background:#111;color:#fff;display:flex;justify-content:space-between;align-items:center}nav a{color:#fff;text-decoration:none;margin:0 10px}.hero{display:grid;place-items:center;height:40vh;background:linear-gradient(135deg,#ff9966,#ff5e62);color:#fff;text-align:center}.grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(200px,1fr));gap:16px;margin:24px;padding:0 12px}.card{border:1px solid #eee;border-radius:12px;overflow:hidden;box-shadow:0 4px 16px rgba(0,0,0,.06)}.img{height:140px;background:linear-gradient(45deg,#ff9a9e,#fecfef);display:grid;place-items:center;color:#fff}.card h4{margin:12px}.cta{display:inline-block;margin:16px;background:#111;color:#fff;padding:10px 16px;border-radius:8px;text-decoration:none}footer{padding:16px;text-align:center;border-top:1px solid #eee}</style></head><body><header><strong>La Bunicii</strong><nav><a href="#">Meniu</a><a href="#">Rezervări</a><a href="#">Contact</a></nav></header><section class="hero"><div><h1>Bun venit!</h1><p>Mâncare ca la bunica acasă.</p></div></section><section class="grid"><div class="card"><div class="img">🍲</div><h4>Ciorbă de perișoare</h4></div><div class="card"><div class="img">🍖</div><h4>Sarmale</h4></div><div class="card"><div class="img">🥗</div><h4>Salată de vinete</h4></div><div class="card"><div class="img">🍰</div><h4>Cheesecake</h4></div></section><div style="text-align:center"><a class="cta" href="#">Rezervă o masă</a></div><footer>© Restaurant La Bunicii</footer></body></html>`,
-    clinic:`<!DOCTYPE html><html><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1"><title>Model Clinică</title><style>body{font-family:system-ui;margin:0}header{padding:20px;background:#0d47a1;color:#fff;display:flex;justify-content:space-between}.hero{padding:50px 20px;background:#e3f2fd;text-align:center}.grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(220px,1fr));gap:16px;margin:20px}.card{padding:16px;border:1px solid #e0e0e0;border-radius:10px;background:#fff}.cta{display:inline-block;background:#0d47a1;color:#fff;padding:10px 16px;border-radius:8px;text-decoration:none;margin-top:10px}</style></head><body><header><strong>ProDent</strong><nav>☎ 021 000 0000</nav></header><section class="hero"><h1>Zâmbet sănătos</h1><p>Programați o consultație în 60 de secunde.</p><a href="#" class="cta">Programează-te</a></section><section class="grid"><div class="card"><h3>Detartraj</h3><p>Curățare profesională</p></div><div class="card"><h3>Albire</h3><p>Proceduri moderne</p></div><div class="card"><h3>Implant</h3><p>Specialiști certificați</p></div><div class="card"><h3>Urgențe</h3><p>Intervenim rapid</p></div></section></body></html>`,
-    shop:`<!DOCTYPE html><html><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1"><title>Model Magazin</title><style>body{font-family:system-ui;margin:0}header{padding:16px;background:#1b5e20;color:#fff;display:flex;justify-content:space-between}.filters{padding:12px;background:#e8f5e9;display:flex;gap:10px;flex-wrap:wrap}.grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(180px,1fr));gap:16px;margin:16px}.card{border:1px solid #e0e0e0;border-radius:10px;overflow:hidden}.img{height:120px;background:linear-gradient(45deg,#66bb6a,#43a047);display:grid;place-items:center;color:#fff}.card h4{margin:10px}.price{margin:0 10px 10px;font-weight:600}.btn{display:block;margin:10px;background:#1b5e20;color:#fff;text-align:center;padding:8px;border-radius:6px;text-decoration:none}</style></head><body><header><strong>TechGear</strong><div>🛒 Coș (0)</div></header><div class="filters"><input placeholder="Caută..."/><select><option>Toate categoriile</option><option>Laptopuri</option><option>Componente</option></select></div><div class="grid"><div class="card"><div class="img">🎧</div><h4>Căști Pro</h4><div class="price">199 RON</div><a class="btn" href="#">Adaugă în coș</a></div><div class="card"><div class="img">⌨️</div><h4>Tastatură RGB</h4><div class="price">249 RON</div><a class="btn" href="#">Adaugă în coș</a></div><div class="card"><div class="img">🖱️</div><h4>Mous Pro</h4><div class="price">149 RON</div><a class="btn" href="#">Adaugă în coș</a></div><div class="card"><div class="img">💻</div><h4>Laptop X</h4><div class="price">2999 RON</div><a class="btn" href="#">Adaugă în coș</a></div></div></body></html>`,
-    realestate:`<!DOCTYPE html><html><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1"><title>Model Imobiliar</title><style>body{font-family:system-ui;margin:0}header{padding:16px;background:#6d4c41;color:#fff;display:flex;justify-content:space-between}.search{display:flex;gap:10px;padding:16px;background:#efebe9;flex-wrap:wrap}input,select{padding:10px;border:1px solid #ccc;border-radius:8px}.grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(220px,1fr));gap:16px;margin:16px}.card{border:1px solid #ddd;border-radius:12px;overflow:hidden}.img{height:140px;background:linear-gradient(45deg,#a1887f,#8d6e63);display:grid;place-items:center;color:#fff}.meta{display:flex;justify-content:space-between;margin:8px 10px 14px}</style></head><body><header><strong>CasaMea</strong><div>🏠 Proprietăți</div></header><div class="search"><input placeholder="Oraș"/><select><option>Tip: Orice</option><option>Apartament</option><option>Casă</option></select><select><option>Buget</option><option>&lt; 100k</option><option>100-200k</option></select><button>Caută</button></div><div class="grid"><div class="card"><div class="img">📷</div><h4 style="margin:10px">Apartament 2 cam.</h4><div class="meta"><span>78.000€</span><span>Cluj</span></div></div><div class="card"><div class="img">📷</div><h4 style="margin:10px">Casă 4 cam.</h4><div class="meta"><span>185.000€</span><span>București</span></div></div><div class="card"><div class="img">📷</div><h4 style="margin:10px">Garsonieră</h4><div class="meta"><span>52.000€</span><span>Timișoara</span></div></div></div></body></html>`,
-    beauty:`<!DOCTYPE html><html><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1"><title>Model Salon</title><style>body{font-family:system-ui;margin:0}header{padding:18px;background:#8e24aa;color:#fff;display:flex;justify-content:space-between}.hero{padding:40px 20px;background:#f3e5f5;text-align:center}.grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(200px,1fr));gap:16px;margin:20px}.card{border:1px solid #e0e0e0;border-radius:12px;padding:16px;background:#fff}.btn{display:inline-block;background:#8e24aa;color:#fff;padding:8px 14px;border-radius:8px;text-decoration:none;margin-top:8px}</style></head><body><header><strong>Bella</strong><div>📅 Rezervă</div></header><section class="hero"><h1>Răsfață-te</h1><p>Pachete pentru păr, unghii, make-up.</p></section><section class="grid"><div class="card"><h3>Tuns & Coafat</h3><p>De la 90 RON</p><a href="#" class="btn">Rezervă</a></div><div class="card"><h3>Manichiură</h3><p>De la 70 RON</p><a href="#" class="btn">Rezervă</a></div><div class="card"><h3>Machiaj</h3><p>De la 120 RON</p><a href="#" class="btn">Rezervă</a></div></section></body></html>`,
-    accounting:`<!DOCTYPE html><html><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1"><title>Model Contabilitate</title><style>body{font-family:system-ui;margin:0}header{padding:18px;background:#1565c0;color:#fff;display:flex;justify-content:space-between}.hero{padding:40px 20px;background:#e3f2fd}.grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(220px,1fr));gap:16px;margin:20px}.card{border:1px solid #e0e0e0;border-radius:12px;padding:16px;background:#fff}</style></head><body><header><strong>ExpertCont</strong><div>📩 Contact rapid</div></header><section class="hero"><h1>Contabilitate fără griji</h1><p>Servicii complete pentru IMM.</p></section><section class="grid"><div class="card"><h3>Primare</h3><p>Înregistrări, balanțe, declarații.</p></div><div class="card"><h3>Salarizare</h3><p>State salarii, Revisal.</p></div><div class="card"><h3>Consultanță</h3><p>Optimizare fiscală.</p></div></section></body></html>`
-  };
-
-  const modal = document.getElementById('demoModal');
-  const frame = document.getElementById('demoFrame');
-  const closeBtn = document.getElementById('closeModal');
-
-  function openDemo(name, title){
-    frame.setAttribute('srcdoc', DEMOS[name] || '<h1 style="font-family:system-ui">Demo indisponibil</h1>');
-    document.getElementById('demoTitle').textContent = 'Preview: ' + (title || name);
-    modal.classList.add('open');
-    modal.setAttribute('aria-hidden','false');
-    document.body.style.overflow='hidden';
-  }
-  function closeDemo(){
-    modal.classList.remove('open');
-    modal.setAttribute('aria-hidden','true');
-    document.body.style.overflow='';
-    frame.setAttribute('srcdoc','');
-  }
-  closeBtn.addEventListener('click', closeDemo);
-  document.addEventListener('keydown', (e)=>{ if(e.key==='Escape') closeDemo(); });
-  modal.addEventListener('click', (e)=>{ if(e.target===modal) closeDemo(); });
-
-  document.querySelectorAll('.portfolio-item').forEach(card=>{
-    card.addEventListener('click', ()=>{
-      const key = card.getAttribute('data-demo');
-      const title = card.querySelector('h3')?.textContent || '';
-      openDemo(key, title);
-    });
-  });
+});
 </script>
 </body>
 </html>
