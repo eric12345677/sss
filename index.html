@@ -617,7 +617,7 @@
 
     // Banner buttons
     if(cookieManage){ cookieManage.addEventListener('click', ()=>{ syncUI(saved||DEFAULT_PREFS); openPrefs(); }); }
-    if(rejectAll){ rejectAll.addEventListener('click', ()=>{ const p={ functional:false, analytics:false, marketing:false }; setPrefs(p); hideBanner(); }); }
+    if(rejectAll){ rejectAll.addEventListener('click', ()=>{ const p={ functional:false, analytics:false, marketing:false }; setPrefs(p); try{ document.cookie = 'site_lang=; expires=Thu, 01 Jan 1970 00:00:00 GMT; path=/; SameSite=Lax'; }catch(e){} hideBanner(); }); }
     if(acceptAll){ acceptAll.addEventListener('click', ()=>{ const p={ functional:true, analytics:true, marketing:true }; setPrefs(p); hideBanner(); applyScripts({ ...DEFAULT_PREFS, ...p }); }); }
 
     // Pref modal
@@ -630,6 +630,8 @@
       setPrefs(p);
       hideBanner();
       applyScripts({ ...DEFAULT_PREFS, ...p });
+      // If functional disabled, clear language cookie and revert to RO immediately
+      if(!p.functional){ try{ document.cookie = 'site_lang=; expires=Thu, 01 Jan 1970 00:00:00 GMT; path=/; SameSite=Lax'; }catch(e){} applyLang('ro'); }
       closePrefs();
     }); }
 
@@ -821,6 +823,9 @@
     const d = new Date(); d.setTime(d.getTime() + (days*24*60*60*1000));
     document.cookie = name + '=' + encodeURIComponent(value) + '; expires=' + d.toUTCString() + '; path=/; SameSite=Lax';
   }
+  function deleteCookie(name){
+    document.cookie = name + '=; expires=Thu, 01 Jan 1970 00:00:00 GMT; path=/; SameSite=Lax';
+  }
   function getCookie(name){
     const parts = document.cookie.split(';');
     for(const part of parts){
@@ -828,6 +833,9 @@
       if(k && k.trim() === name){ return v ? v.trim() : ''; }
     }
     return '';
+  }
+  function getConsentPrefs(){
+    try{ return JSON.parse(localStorage.getItem('cookie_consent_v2')) || null; }catch(e){ return null; }
   }
   function applyLang(lang){
     const dict = I18N[lang] || I18N.ro;
@@ -953,8 +961,14 @@
   }
 
   function initLang(){
+    const consent = getConsentPrefs();
+    const functionalAllowed = !!(consent && consent.functional);
+    if(!functionalAllowed){
+      deleteCookie(LANG_COOKIE);
+      applyLang('ro');
+      return;
+    }
     const cookieVal = decodeURIComponent(getCookie(LANG_COOKIE) || '');
-    // Default to Romanian unless a valid cookie is already set
     const lang = (cookieVal === 'en' || cookieVal === 'ro') ? cookieVal : 'ro';
     applyLang(lang);
     setCookie(LANG_COOKIE, lang, 365);
@@ -965,7 +979,9 @@
       const current = document.documentElement.getAttribute('lang') === 'en' ? 'en' : 'ro';
       const next = current === 'en' ? 'ro' : 'en';
       applyLang(next);
-      setCookie(LANG_COOKIE, next, 365);
+      const consent = getConsentPrefs();
+      if(consent && consent.functional){ setCookie(LANG_COOKIE, next, 365); }
+      else { deleteCookie(LANG_COOKIE); }
     });
   }
 
