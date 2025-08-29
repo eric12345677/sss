@@ -115,6 +115,10 @@
   /* Reopen FAB */
   .cookie-fab{position:fixed;left:12px;bottom:12px;z-index:3200;background:rgba(255,255,255,.95);border:1px solid #eee;border-radius:999px;padding:8px 12px;font-size:.9rem;cursor:pointer;box-shadow:0 4px 16px rgba(0,0,0,.15);display:none}
   .cookie-fab:hover{box-shadow:0 6px 22px rgba(0,0,0,.2)}
+  /* Language switcher */
+  .lang-switch{margin-left:12px;border:1px solid #e5e5e5;background:#fff;border-radius:20px;padding:6px 10px;display:inline-flex;align-items:center;gap:6px;cursor:pointer;font-size:.95rem}
+  .lang-flag{font-size:1rem}
+  @media (max-width:768px){ .lang-switch{padding:6px 8px;font-size:.9rem} }
   @media (max-width:768px){
     .cookie-inner{flex-direction:column;align-items:stretch}
     .cookie-actions{justify-content:flex-end}
@@ -137,6 +141,10 @@
         <li data-tab="contact"><a href="#contact">Contact</a></li>
         <li data-tab="about"><a href="#about">Despre Noi</a></li>
       </ul>
+      <button id="langSwitch" class="lang-switch" aria-label="Language">
+        <span class="lang-flag" id="langFlag">🇷🇴</span>
+        <span id="langLabel">RO</span>
+      </button>
     </div>
   </nav>
 
@@ -633,6 +641,115 @@
   const navMenu = document.getElementById('navMenu');
   const mobileToggle = document.getElementById('mobileToggle');
   const logoLink = document.getElementById('logoLink');
+  // Language
+  const langSwitch = document.getElementById('langSwitch');
+  const langFlag = document.getElementById('langFlag');
+  const langLabel = document.getElementById('langLabel');
+
+  const LANG_COOKIE = 'site_lang';
+  const I18N = {
+    ro: {
+      nav_home: 'Acasă', nav_services: 'Servicii', nav_pricing: 'Prețuri', nav_hosting: 'Hosting', nav_portfolio: 'Portofoliu', nav_contact: 'Contact', nav_about: 'Despre Noi',
+      hero_title: 'WebCraft Pro',
+      hero_sub: 'Transformăm ideile în experiențe web excepționale. Servicii complete de web development cu tehnologii moderne și prețuri accesibile.',
+      cta_request: 'Solicită Ofertă Gratuită',
+      why_choose: 'De ce să ne alegi?',
+      services_title: 'Serviciile Noastre',
+      pricing_title: 'Pachete și Prețuri',
+      pricing_note: 'Prețuri competitive pentru piața din România. Toate prețurile includ TVA și sunt fără costuri ascunse.',
+      html_simple: 'HTML Simplu', html_advanced: 'HTML Avansat', shop_title: 'Magazin Online',
+      buy_now: 'Comandă Acum',
+      hosting_title: 'Hosting', hosting_plan: 'Hosting Start', hosting_activate: 'Activează',
+      portfolio_title: 'Portofoliul Nostru',
+      contact_title: 'Contactează-ne', contact_form_title: 'Solicită Ofertă Gratuită', contact_submit: '📧 Trimite Solicitarea',
+      about_title: 'Despre WebCraft Pro', team_title: 'Echipa Noastră',
+      cookies_policy: 'Politica de Cookies',
+    },
+    en: {
+      nav_home: 'Home', nav_services: 'Services', nav_pricing: 'Pricing', nav_hosting: 'Hosting', nav_portfolio: 'Portfolio', nav_contact: 'Contact', nav_about: 'About Us',
+      hero_title: 'WebCraft Pro',
+      hero_sub: 'We turn ideas into outstanding web experiences. Full web development services with modern technologies and fair prices.',
+      cta_request: 'Get a Free Quote',
+      why_choose: 'Why choose us?',
+      services_title: 'Our Services',
+      pricing_title: 'Packages & Pricing',
+      pricing_note: 'Competitive prices for the Romanian market. All prices include VAT and have no hidden fees.',
+      html_simple: 'Basic HTML', html_advanced: 'Advanced HTML', shop_title: 'Online Store',
+      buy_now: 'Order Now',
+      hosting_title: 'Hosting', hosting_plan: 'Hosting Start', hosting_activate: 'Activate',
+      portfolio_title: 'Our Portfolio',
+      contact_title: 'Contact Us', contact_form_title: 'Request a Free Quote', contact_submit: '📧 Send Request',
+      about_title: 'About WebCraft Pro', team_title: 'Our Team',
+      cookies_policy: 'Cookies Policy',
+    }
+  };
+
+  function setCookie(name, value, days){
+    const d = new Date(); d.setTime(d.getTime() + (days*24*60*60*1000));
+    document.cookie = name + '=' + encodeURIComponent(value) + '; expires=' + d.toUTCString() + '; path=/; SameSite=Lax';
+  }
+  function getCookie(name){
+    return document.cookie.split('; ').find(r => r.startsWith(name + '='))?.split('=')[1] || '';
+  }
+  function applyLang(lang){
+    const dict = I18N[lang] || I18N.ro;
+    document.documentElement.setAttribute('lang', lang);
+    // Nav labels
+    const navMap = [
+      ['home','nav_home'], ['services','nav_services'], ['pricing','nav_pricing'], ['hosting','nav_hosting'], ['portfolio','nav_portfolio'], ['contact','nav_contact'], ['about','nav_about']
+    ];
+    navMap.forEach(([tab,key])=>{
+      const li = document.querySelector('.nav-menu li[data-tab="'+tab+'"] a');
+      if(li) li.textContent = dict[key];
+    });
+    // Hero
+    const heroTitle = document.querySelector('#home .hero h1'); if(heroTitle) heroTitle.textContent = dict.hero_title;
+    const heroSub = document.querySelector('#home .hero p'); if(heroSub) heroSub.textContent = dict.hero_sub;
+    const heroCta = document.querySelector('#home .hero .cta-button'); if(heroCta) heroCta.textContent = dict.cta_request;
+    // Section titles
+    const why = document.querySelector('#home .section-title'); if(why) why.textContent = dict.why_choose;
+    const servicesTitle = document.querySelector('#services .section-title'); if(servicesTitle) servicesTitle.textContent = dict.services_title;
+    const pricingTitle = document.querySelector('#pricing .section-title'); if(pricingTitle) pricingTitle.textContent = dict.pricing_title;
+    const pricingNote = document.querySelector('#pricing > p'); if(pricingNote) pricingNote.textContent = dict.pricing_note;
+    const portfolioTitle = document.querySelector('#portfolio .section-title'); if(portfolioTitle) portfolioTitle.textContent = dict.portfolio_title;
+    const contactTitle = document.querySelector('#contact .section-title'); if(contactTitle) contactTitle.textContent = dict.contact_title;
+    const contactFormTitle = document.querySelector('#contact .contact-form h3'); if(contactFormTitle) contactFormTitle.textContent = dict.contact_form_title;
+    const contactSubmit = document.querySelector('#contact button[type="submit"]'); if(contactSubmit) contactSubmit.textContent = dict.contact_submit;
+    const aboutTitle = document.querySelector('#about .section-title'); if(aboutTitle) aboutTitle.textContent = dict.about_title;
+    const teamTitle = document.querySelector('#about h3[style*="Echipa"]'); if(teamTitle) teamTitle.textContent = dict.team_title;
+    const cookieTitle = document.querySelector('#cookies .section-title'); if(cookieTitle) cookieTitle.textContent = dict.cookies_policy;
+    // Pricing cards titles and buttons
+    const htmlS = document.querySelector('#pricing .pricing-card:nth-child(1) h3'); if(htmlS) htmlS.textContent = dict.html_simple;
+    const htmlA = document.querySelector('#pricing .pricing-card.featured h3'); if(htmlA) htmlA.textContent = dict.html_advanced;
+    const shop = document.querySelector('#pricing .pricing-card:nth-child(3) h3'); if(shop) shop.textContent = dict.shop_title;
+    document.querySelectorAll('#pricing .pricing-card .pricing-button').forEach(b=> b.textContent = dict.buy_now);
+    // Hosting
+    const hostingSection = document.querySelector('#hosting .section-title'); if(hostingSection) hostingSection.textContent = dict.hosting_title;
+    const hostingPlan = document.querySelector('#hosting .pricing-card h3'); if(hostingPlan) hostingPlan.textContent = dict.hosting_plan;
+    const hostingBtn = document.querySelector('#hosting .pricing-card .pricing-button'); if(hostingBtn) hostingBtn.textContent = dict.hosting_activate;
+
+    // Switcher UI
+    if(langFlag && langLabel){
+      if(lang==='en'){ langFlag.textContent='🇬🇧'; langLabel.textContent='EN'; }
+      else { langFlag.textContent='🇷🇴'; langLabel.textContent='RO'; }
+    }
+  }
+
+  function initLang(){
+    const saved = decodeURIComponent(getCookie(LANG_COOKIE) || '') || (navigator.language||'ro').startsWith('en') ? 'en' : 'ro';
+    const lang = (saved==='en' ? 'en' : 'ro');
+    applyLang(lang);
+    setCookie(LANG_COOKIE, lang, 365);
+  }
+
+  if(langSwitch){
+    langSwitch.addEventListener('click', ()=>{
+      const current = document.documentElement.getAttribute('lang') === 'en' ? 'en' : 'ro';
+      const next = current === 'en' ? 'ro' : 'en';
+      applyLang(next);
+      setCookie(LANG_COOKIE, next, 365);
+    });
+  }
 
   function closeMobileMenu(){
     navMenu.classList.remove('mobile-active');
@@ -690,6 +807,8 @@
     const initial = (location.hash||'#home').replace('#','');
     const navItem = document.querySelector('.nav-menu li[data-tab="'+initial+'"]');
     if(navItem){ showTab(initial, navItem); }
+    // Initialize language
+    initLang();
   });
 
   // Pricing buttons handler - navigate to contact with service pre-selected
