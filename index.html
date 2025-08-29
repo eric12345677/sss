@@ -664,6 +664,23 @@
       contact_title: 'Contactează-ne', contact_form_title: 'Solicită Ofertă Gratuită', contact_submit: '📧 Trimite Solicitarea',
       about_title: 'Despre WebCraft Pro', team_title: 'Echipa Noastră',
       cookies_policy: 'Politica de Cookies',
+      cookie_banner_text: 'Folosim cookie-uri pentru a-ți oferi o experiență mai bună și pentru analitice. Poți alege categoriile.',
+      cookie_reject: 'Respinge tot',
+      cookie_prefs: 'Preferințe',
+      cookie_accept_all: 'Acceptă tot',
+      cookie_pref_title: 'Preferințe Cookies',
+      cookie_row_necessary_title: 'Necesare',
+      cookie_row_necessary_desc: 'Necesare pentru funcționarea site-ului. Nu pot fi dezactivate.',
+      cookie_row_functional_title: 'Funcționale',
+      cookie_row_functional_desc: 'Funcții suplimentare (de ex. servicii de trimitere formulare).',
+      cookie_row_analytics_title: 'Analitice',
+      cookie_row_analytics_desc: 'Măsurarea anonimă a traficului (ex. Google Analytics).',
+      cookie_row_marketing_title: 'Marketing',
+      cookie_row_marketing_desc: 'Personalizare și reclame.',
+      cookie_modal_reject_all: 'Respinge tot',
+      cookie_modal_accept_all: 'Acceptă tot',
+      cookie_modal_save: 'Salvează',
+      cookie_fab: 'Preferințe cookie',
     },
     en: {
       nav_home: 'Home', nav_services: 'Services', nav_pricing: 'Pricing', nav_hosting: 'Hosting', nav_portfolio: 'Portfolio', nav_contact: 'Contact', nav_about: 'About Us',
@@ -681,6 +698,23 @@
       contact_title: 'Contact Us', contact_form_title: 'Request a Free Quote', contact_submit: '📧 Send Request',
       about_title: 'About WebCraft Pro', team_title: 'Our Team',
       cookies_policy: 'Cookies Policy',
+      cookie_banner_text: 'We use cookies to improve your experience and for analytics. You can choose categories.',
+      cookie_reject: 'Reject all',
+      cookie_prefs: 'Preferences',
+      cookie_accept_all: 'Accept all',
+      cookie_pref_title: 'Cookie Preferences',
+      cookie_row_necessary_title: 'Necessary',
+      cookie_row_necessary_desc: 'Required for the site to function. Cannot be disabled.',
+      cookie_row_functional_title: 'Functional',
+      cookie_row_functional_desc: 'Additional features (e.g., form/email services).',
+      cookie_row_analytics_title: 'Analytics',
+      cookie_row_analytics_desc: 'Anonymous traffic measurement (e.g., Google Analytics).',
+      cookie_row_marketing_title: 'Marketing',
+      cookie_row_marketing_desc: 'Personalization and ads.',
+      cookie_modal_reject_all: 'Reject all',
+      cookie_modal_accept_all: 'Accept all',
+      cookie_modal_save: 'Save',
+      cookie_fab: 'Cookie preferences',
     }
   };
 
@@ -718,6 +752,28 @@
     const aboutTitle = document.querySelector('#about .section-title'); if(aboutTitle) aboutTitle.textContent = dict.about_title;
     const teamTitle = document.querySelector('#about h3[style*="Echipa"]'); if(teamTitle) teamTitle.textContent = dict.team_title;
     const cookieTitle = document.querySelector('#cookies .section-title'); if(cookieTitle) cookieTitle.textContent = dict.cookies_policy;
+    // Cookie banner & modal texts
+    const cbText = document.querySelector('#cookieBanner .cookie-text'); if(cbText){
+      const policyLink = cbText.querySelector('a.nav-link');
+      cbText.textContent = dict.cookie_banner_text + ' ';
+      if(policyLink){ policyLink.textContent = dict.cookies_policy; policyLink.style.color = '#667eea'; cbText.appendChild(policyLink); cbText.appendChild(document.createTextNode('.')); }
+    }
+    const btnReject = document.getElementById('cookieRejectAll'); if(btnReject) btnReject.textContent = dict.cookie_reject;
+    const btnPrefs = document.getElementById('cookieManage'); if(btnPrefs) btnPrefs.textContent = dict.cookie_prefs;
+    const btnAccept = document.getElementById('cookieAcceptAll'); if(btnAccept) btnAccept.textContent = dict.cookie_accept_all;
+    const prefTitle = document.getElementById('cookiePrefTitle'); if(prefTitle) prefTitle.textContent = dict.cookie_pref_title;
+    const rowNecT = document.querySelector('#cookiePrefModal .cookie-pref-row:nth-child(1) h4'); if(rowNecT) rowNecT.textContent = dict.cookie_row_necessary_title;
+    const rowNecD = document.querySelector('#cookiePrefModal .cookie-pref-row:nth-child(1) div[style*="color:#666"]'); if(rowNecD) rowNecD.textContent = dict.cookie_row_necessary_desc;
+    const rowFunT = document.querySelector('#cookiePrefModal .cookie-pref-row:nth-child(2) h4'); if(rowFunT) rowFunT.textContent = dict.cookie_row_functional_title;
+    const rowFunD = document.querySelector('#cookiePrefModal .cookie-pref-row:nth-child(2) div[style*="color:#666"]'); if(rowFunD) rowFunD.textContent = dict.cookie_row_functional_desc;
+    const rowAnaT = document.querySelector('#cookiePrefModal .cookie-pref-row:nth-child(3) h4'); if(rowAnaT) rowAnaT.textContent = dict.cookie_row_analytics_title;
+    const rowAnaD = document.querySelector('#cookiePrefModal .cookie-pref-row:nth-child(3) div[style*="color:#666"]'); if(rowAnaD) rowAnaD.textContent = dict.cookie_row_analytics_desc;
+    const rowMarT = document.querySelector('#cookiePrefModal .cookie-pref-row:nth-child(4) h4'); if(rowMarT) rowMarT.textContent = dict.cookie_row_marketing_title;
+    const rowMarD = document.querySelector('#cookiePrefModal .cookie-pref-row:nth-child(4) div[style*="color:#666"]'); if(rowMarD) rowMarD.textContent = dict.cookie_row_marketing_desc;
+    const ccRAll = document.getElementById('ccRejectAll'); if(ccRAll) ccRAll.textContent = dict.cookie_modal_reject_all;
+    const ccAAll = document.getElementById('ccAcceptAll'); if(ccAAll) ccAAll.textContent = dict.cookie_modal_accept_all;
+    const ccSave = document.getElementById('ccSave'); if(ccSave) ccSave.textContent = dict.cookie_modal_save;
+    const fabBtn = document.getElementById('cookieFab'); if(fabBtn) fabBtn.textContent = dict.cookie_fab;
     // Pricing cards titles and buttons
     const htmlS = document.querySelector('#pricing .pricing-card:nth-child(1) h3'); if(htmlS) htmlS.textContent = dict.html_simple;
     const htmlA = document.querySelector('#pricing .pricing-card.featured h3'); if(htmlA) htmlA.textContent = dict.html_advanced;
@@ -736,8 +792,9 @@
   }
 
   function initLang(){
-    const saved = decodeURIComponent(getCookie(LANG_COOKIE) || '') || (navigator.language||'ro').startsWith('en') ? 'en' : 'ro';
-    const lang = (saved==='en' ? 'en' : 'ro');
+    const cookieVal = decodeURIComponent(getCookie(LANG_COOKIE) || '');
+    // Default to Romanian unless a valid cookie is already set
+    const lang = (cookieVal === 'en' || cookieVal === 'ro') ? cookieVal : 'ro';
     applyLang(lang);
     setCookie(LANG_COOKIE, lang, 365);
   }
