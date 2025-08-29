@@ -11,7 +11,7 @@
 <meta name="twitter:card" content="summary">
 <link rel="preconnect" href="https://cdn.jsdelivr.net" crossorigin>
 <link rel="dns-prefetch" href="https://cdn.jsdelivr.net">
-<script defer src="https://cdn.jsdelivr.net/npm/@emailjs/browser@3/dist/email.min.js" crossorigin="anonymous"></script>
+<script defer type="text/plain" data-cookiecategory="functional" data-src="https://cdn.jsdelivr.net/npm/@emailjs/browser@3/dist/email.min.js" crossorigin="anonymous"></script>
 <style>
   *{margin:0;padding:0;box-sizing:border-box}
   body{font-family:'Segoe UI',Tahoma,Geneva,Verdana,sans-serif;line-height:1.6;color:#333;background:linear-gradient(135deg,#667eea 0%,#764ba2 100%);min-height:100vh}
@@ -44,6 +44,7 @@
   .pricing-card.featured{border:2px solid #ff6b6b;transform:scale(1.05)}
   .pricing-card.featured::before{content:"RECOMANDAT";position:absolute;top:-15px;left:50%;transform:translateX(-50%);background:linear-gradient(45deg,#ff6b6b,#ee5a24);color:#fff;padding:.5rem 1.5rem;border-radius:20px;font-size:.8rem;font-weight:bold}
   .price{font-size:2.5rem;font-weight:bold;color:#333;margin:1rem 0}
+  .price .from{font-size:.9rem;font-weight:600;color:#888;margin-right:8px;vertical-align:middle}
   .feature-list{list-style:none;margin:2rem 0}
   .feature-list li{padding:.5rem 0;color:#666}
   .feature-list li:before{content:"✓";color:#27ae60;font-weight:bold;margin-right:.5rem}
@@ -66,9 +67,11 @@
   .mobile-menu-toggle.active span:nth-child(3){transform:rotate(45deg) translate(-5px,-6px)}
   @media (max-width:768px){
     .mobile-menu-toggle{display:flex}
-    .nav-menu{position:fixed;top:70px;left:0;right:0;background:rgba(255,255,255,.98);backdrop-filter:blur(10px);flex-direction:column;padding:1rem 0;box-shadow:0 2px 20px rgba(0,0,0,.1);display:none;z-index:999}
+    .nav-menu{position:fixed;top:70px;left:0;right:0;background:rgba(255,255,255,.98);backdrop-filter:blur(10px);flex-direction:column;padding:.5rem 0;box-shadow:0 2px 20px rgba(0,0,0,.1);display:none;z-index:999;max-height:calc(100vh - 70px);overflow-y:auto}
     .nav-menu.mobile-active{display:flex}
-    .nav-menu li{margin:.5rem 1rem;text-align:center;padding:1rem;border-radius:10px}
+    .nav-menu li{margin:.25rem .75rem;text-align:center;padding:.6rem .75rem;border-radius:10px}
+    .nav-menu li a{font-size:.95rem}
+    .nav-container{padding:0 12px}
     .hero h1{font-size:2.5rem}
     .hero p{font-size:1.1rem}
     .services-grid,.pricing-grid,.portfolio-grid{grid-template-columns:1fr}
@@ -83,6 +86,39 @@
   .modal-close{background:#eee;border:0;border-radius:8px;padding:8px 12px;cursor:pointer}
   .modal-body{flex:1}
   .modal-iframe{width:100%;height:100%;border:0}
+  /* Cookie banner */
+  .cookie-banner{position:fixed;left:0;right:0;bottom:0;background:rgba(255,255,255,.97);backdrop-filter:blur(8px);box-shadow:0 -4px 20px rgba(0,0,0,.12);padding:14px 16px;z-index:3000;display:none}
+  .cookie-inner{max-width:1100px;margin:0 auto;display:flex;align-items:center;gap:14px}
+  .cookie-text{color:#333;font-size:.95rem;flex:1}
+  .cookie-actions{display:flex;gap:10px;flex-wrap:wrap}
+  .cookie-btn{border:0;border-radius:24px;padding:10px 16px;cursor:pointer}
+  .cookie-accept{background:linear-gradient(45deg,#27ae60,#229954);color:#fff}
+  .cookie-reject{background:linear-gradient(45deg,#e74c3c,#c0392b);color:#fff}
+  .cookie-more{background:#eee;color:#333}
+  .cookie-manage{background:#eee;color:#333}
+  /* Preferences modal */
+  .cookie-pref-modal{position:fixed;inset:0;background:rgba(0,0,0,.6);display:none;align-items:center;justify-content:center;z-index:3500;padding:20px}
+  .cookie-pref-modal.open{display:flex}
+  .cookie-pref-dialog{background:#fff;border-radius:12px;max-width:680px;width:100%;overflow:hidden;box-shadow:0 10px 40px rgba(0,0,0,.2)}
+  .cookie-pref-header{display:flex;justify-content:space-between;align-items:center;padding:14px 16px;border-bottom:1px solid #eee}
+  .cookie-pref-body{padding:16px}
+  .cookie-pref-row{display:flex;align-items:center;justify-content:space-between;border:1px solid #eee;border-radius:10px;padding:12px 14px;margin:10px 0}
+  .cookie-pref-row h4{margin:0 0 6px 0}
+  .cookie-pref-actions{display:flex;justify-content:flex-end;gap:10px;padding:12px 16px;border-top:1px solid #eee}
+  .switch{position:relative;display:inline-block;width:46px;height:24px}
+  .switch input{opacity:0;width:0;height:0}
+  .slider{position:absolute;cursor:pointer;top:0;left:0;right:0;bottom:0;background:#ccc;transition:.2s;border-radius:999px}
+  .slider:before{position:absolute;content:"";height:18px;width:18px;left:3px;bottom:3px;background:white;transition:.2s;border-radius:50%}
+  input:checked + .slider{background:#667eea}
+  input:checked + .slider:before{transform:translateX(22px)}
+  input:disabled + .slider{background:#ddd;cursor:not-allowed}
+  /* Reopen FAB */
+  .cookie-fab{position:fixed;left:12px;bottom:12px;z-index:3200;background:rgba(255,255,255,.95);border:1px solid #eee;border-radius:999px;padding:8px 12px;font-size:.9rem;cursor:pointer;box-shadow:0 4px 16px rgba(0,0,0,.15);display:none}
+  .cookie-fab:hover{box-shadow:0 6px 22px rgba(0,0,0,.2)}
+  @media (max-width:768px){
+    .cookie-inner{flex-direction:column;align-items:stretch}
+    .cookie-actions{justify-content:flex-end}
+  }
 </style>
 </head>
 <body>
@@ -191,7 +227,7 @@
         <div class="pricing-grid">
           <div class="pricing-card">
             <h3>HTML Simplu</h3>
-            <div class="price">399 RON</div>
+            <div class="price"><span class="from">de la</span>399 RON</div>
             <ul class="feature-list">
               <li>Până la 5 pagini</li>
               <li>Design 100% personalizat</li>
@@ -204,7 +240,7 @@
           </div>
           <div class="pricing-card featured">
             <h3>HTML Avansat</h3>
-            <div class="price">749 RON</div>
+            <div class="price"><span class="from">de la</span>749 RON</div>
             <ul class="feature-list">
               <li>Până la 10 pagini</li>
               <li>Animații avansate</li>
@@ -217,7 +253,7 @@
           </div>
           <div class="pricing-card">
             <h3>Magazin Online</h3>
-            <div class="price">1499 RON</div>
+            <div class="price"><span class="from">de la</span>1499 RON</div>
             <ul class="feature-list">
               <li>Magazin online complet</li>
               <li>Coș, checkout, cont client</li>
@@ -228,17 +264,7 @@
             </ul>
             <button class="cta-button pricing-button" data-service="magazin-online">Comandă Acum</button>
           </div>
-          <!-- Card TEST 1 RON -->
-          <div class="pricing-card">
-            <h3>Test</h3>
-            <div class="price">1 RON</div>
-            <ul class="feature-list">
-              <li>Pentru verificări de flux</li>
-              <li>Exercițiu de plată</li>
-              <li>Nu include livrare finală</li>
-            </ul>
-            <button class="cta-button pricing-button" data-service="test">Încearcă</button>
-          </div>
+          
         </div>
       </div>
 
@@ -250,7 +276,7 @@
         <div class="pricing-grid">
           <div class="pricing-card">
             <h3>Hosting Start</h3>
-            <div class="price">30 RON <span>/lună</span></div>
+            <div class="price"><span class="from">de la</span>30 RON <span>/lună</span></div>
             <ul class="feature-list">
               <li>Deploy automat la fiecare push</li>
               <li>HTTPS activ</li>
@@ -371,7 +397,6 @@
                 <option value="hosting">Hosting</option>
                 <option value="mentenanta">Mentenanță</option>
                 <option value="consultanta">Consultanță Tehnică</option>
-                <option value="test">Test (1 RON)</option>
                 <option value="altele">Altele (specificați în mesaj)</option>
               </select>
             </div>
@@ -399,7 +424,7 @@
         <h2 class="section-title">Despre WebCraft Pro</h2>
         <div style="background:rgba(255,255,255,.9);border-radius:15px;padding:3rem;margin:2rem 0">
           <h3 style="text-align:center;margin-bottom:2rem">Cine Suntem</h3>
-          <p style="font-size:1.1rem;line-height:1.8;margin-bottom:2rem"><strong>WebCraft Pro</strong> este o echipă tânără de dezvoltatori web pasionați de tehnologie. Fondată în 2022, livrăm soluții moderne și accesibile.</p>
+          <p style="font-size:1.1rem;line-height:1.8;margin-bottom:2rem"><strong>WebCraft Pro</strong> este o echipă tânără de dezvoltatori web pasionați de tehnologie.Livrăm soluții moderne și accesibile.</p>
           <p style="font-size:1.1rem;line-height:1.8;margin-bottom:2rem">Oferim servicii de calitate la prețuri competitive. Fiecare proiect este tratat cu atenție la detalii.</p>
         </div>
         <h3 style="color:#fff;text-align:center;margin:2rem 0">Echipa Noastră</h3>
@@ -415,6 +440,36 @@
           <div class="service-card" style="text-align:center">
             <div style="width:80px;height:80px;background:linear-gradient(45deg,#667eea,#764ba2);border-radius:50%;margin:0 auto 1rem;display:flex;align-items:center;justify-content:center;color:#fff;font-size:2rem">🔧</div>
             <h4>Cristian Dumitrescu</h4><p><strong>DevOps</strong></p><p>Responsabil cu hosting, securitate și mentenanță.</p>
+          </div>
+        </div>
+      </div>
+      
+      <!-- COOKIES POLICY -->
+      <div id="cookies" class="tab-content">
+        <h2 class="section-title">Politica de Cookies</h2>
+        <div style="background:rgba(255,255,255,.95);border-radius:15px;padding:2rem;max-width:900px;margin:2rem auto;color:#333">
+          <h3>1. Ce sunt cookie-urile?</h3>
+          <p>Cookie-urile sunt fișiere mici text stocate pe dispozitivul tău când vizitezi un site web. Ele ajută la funcționarea corectă a site-ului, la îmbunătățirea experienței și la colectarea unor informații anonime despre utilizare.</p>
+          <h3>2. Tipuri de cookie-uri pe acest site</h3>
+          <ul class="feature-list" style="margin:1rem 0">
+            <li><strong>Necesare</strong>: esențiale pentru funcționarea site-ului (ex. navigare, securitate). Nu pot fi dezactivate.</li>
+            <li><strong>Funcționale</strong>: oferă funcții suplimentare (ex. trimiterea formularului prin servicii terțe).</li>
+            <li><strong>Analitice</strong>: ne ajută să înțelegem cum este utilizat site-ul, în mod agregat și anonim.</li>
+            <li><strong>Marketing</strong>: personalizare conținut și reclame.</li>
+          </ul>
+          <h3>3. Cum gestionăm consimțământul</h3>
+          <p>La prima vizită, îți afișăm un banner de consimțământ. Poți accepta toate categoriile, respinge tot sau alege preferințele. Preferințele sunt salvate local și pot fi modificate oricând din butonul „Preferințe cookie”.</p>
+          <h3>4. Ce cookie-uri folosim</h3>
+          <p>În acest moment folosim cookie-uri necesare. Cookie-uri funcționale pot fi setate când permiți categoria „Funcționale” (de ex. pentru servicii de e-mail/formulare). Analitice/Marketing sunt încă neactivate implicit.</p>
+          <h3>5. Cum poți controla cookie-urile</h3>
+          <ul class="feature-list" style="margin:1rem 0">
+            <li>Din bannerul de consimțământ sau din „Preferințe cookie”.</li>
+            <li>Din setările browserului (poți șterge sau bloca cookie-uri).</li>
+          </ul>
+          <h3>6. Date și confidențialitate</h3>
+          <p>Cookie-urile analitice sunt agregate și anonime. Pentru detalii privind prelucrarea datelor personale, consultă Politica de Confidențialitate.</p>
+          <div style="text-align:center;margin-top:1.5rem">
+            <button class="cookie-btn cookie-manage" onclick="document.getElementById('cookieFab').click()">Deschide preferințele cookie</button>
           </div>
         </div>
       </div>
@@ -434,9 +489,145 @@
     </div>
   </div>
 
+  <!-- COOKIE CONSENT -->
+  <div class="cookie-banner" id="cookieBanner" role="region" aria-label="Notificare cookies">
+    <div class="cookie-inner">
+      <div class="cookie-text">
+        Folosim cookie-uri pentru a-ți oferi o experiență mai bună și pentru analitice. Poți alege categoriile. Citește <a href="#" class="nav-link" data-tab="cookies" style="color:#667eea">Politica de Cookies</a>.
+      </div>
+      <div class="cookie-actions">
+        <button class="cookie-btn cookie-reject" id="cookieRejectAll">Respinge tot</button>
+        <button class="cookie-btn cookie-manage" id="cookieManage">Preferințe</button>
+        <button class="cookie-btn cookie-accept" id="cookieAcceptAll">Acceptă tot</button>
+      </div>
+    </div>
+  </div>
+  <button class="cookie-fab" id="cookieFab" aria-label="Preferințe cookie">Preferințe cookie</button>
+  <div class="cookie-pref-modal" id="cookiePrefModal" aria-hidden="true" role="dialog" aria-labelledby="cookiePrefTitle">
+    <div class="cookie-pref-dialog">
+      <div class="cookie-pref-header">
+        <div id="cookiePrefTitle" style="font-weight:600">Preferințe Cookies</div>
+        <button class="modal-close" id="cookiePrefClose">Închide</button>
+      </div>
+      <div class="cookie-pref-body">
+        <div class="cookie-pref-row">
+          <div>
+            <h4>Necesare</h4>
+            <div style="color:#666;font-size:.95rem">Necesare pentru funcționarea site-ului. Nu pot fi dezactivate.</div>
+          </div>
+          <label class="switch"><input type="checkbox" checked disabled><span class="slider"></span></label>
+        </div>
+        <div class="cookie-pref-row">
+          <div>
+            <h4>Funcționale</h4>
+            <div style="color:#666;font-size:.95rem">Funcții suplimentare (de ex. servicii de trimitere formulare).</div>
+          </div>
+          <label class="switch"><input type="checkbox" id="ccFunctional"><span class="slider"></span></label>
+        </div>
+        <div class="cookie-pref-row">
+          <div>
+            <h4>Analitice</h4>
+            <div style="color:#666;font-size:.95rem">Măsurarea anonimă a traficului (ex. Google Analytics).</div>
+          </div>
+          <label class="switch"><input type="checkbox" id="ccAnalytics"><span class="slider"></span></label>
+        </div>
+        <div class="cookie-pref-row">
+          <div>
+            <h4>Marketing</h4>
+            <div style="color:#666;font-size:.95rem">Personalizare și reclame.</div>
+          </div>
+          <label class="switch"><input type="checkbox" id="ccMarketing"><span class="slider"></span></label>
+        </div>
+      </div>
+      <div class="cookie-pref-actions">
+        <button class="cookie-btn cookie-more" id="ccRejectAll">Respinge tot</button>
+        <button class="cookie-btn cookie-accept" id="ccAcceptAll">Acceptă tot</button>
+        <button class="cookie-btn cookie-manage" id="ccSave">Salvează</button>
+      </div>
+    </div>
+  </div>
+
 <script>
   // EmailJS init after DOM is ready
   document.addEventListener('DOMContentLoaded', function(){ if (window.emailjs) { emailjs.init("2NkPRAueoBp3VEeIZ"); } });
+  // GDPR Cookie Consent with categories
+  (function(){
+    const CONSENT_KEY = 'cookie_consent_v2';
+    const DEFAULT_PREFS = { necessary:true, functional:false, analytics:false, marketing:false };
+    const banner = document.getElementById('cookieBanner');
+    const fab = document.getElementById('cookieFab');
+    const prefModal = document.getElementById('cookiePrefModal');
+    const prefClose = document.getElementById('cookiePrefClose');
+    const cookieManage = document.getElementById('cookieManage');
+    const rejectAll = document.getElementById('cookieRejectAll');
+    const acceptAll = document.getElementById('cookieAcceptAll');
+    const ccFunctional = document.getElementById('ccFunctional');
+    const ccAnalytics = document.getElementById('ccAnalytics');
+    const ccMarketing = document.getElementById('ccMarketing');
+    const ccRejectAll = document.getElementById('ccRejectAll');
+    const ccAcceptAll = document.getElementById('ccAcceptAll');
+    const ccSave = document.getElementById('ccSave');
+
+    function getPrefs(){
+      try{ return JSON.parse(localStorage.getItem(CONSENT_KEY)) || null; }catch(e){ return null; }
+    }
+    function setPrefs(p){ localStorage.setItem(CONSENT_KEY, JSON.stringify({ ...DEFAULT_PREFS, ...p })); }
+    function openPrefs(){ prefModal.classList.add('open'); prefModal.setAttribute('aria-hidden','false'); }
+    function closePrefs(){ prefModal.classList.remove('open'); prefModal.setAttribute('aria-hidden','true'); }
+    function showBanner(){ if(banner) banner.style.display='block'; }
+    function hideBanner(){ if(banner) banner.style.display='none'; if(fab) fab.style.display='block'; }
+
+    function applyScripts(prefs){
+      // Load deferred scripts by category (type="text/plain" with data-src & data-cookiecategory)
+      document.querySelectorAll('script[type="text/plain"][data-src][data-cookiecategory]').forEach(s=>{
+        const cat = s.getAttribute('data-cookiecategory');
+        if(cat==='necessary' || prefs[cat]){
+          const newS = document.createElement('script');
+          newS.src = s.getAttribute('data-src');
+          if(s.getAttribute('crossorigin')) newS.setAttribute('crossorigin', s.getAttribute('crossorigin'));
+          document.head.appendChild(newS);
+          s.type = 'text/javascript';
+        }
+      });
+      // Example: if analytics consented, you could initialize GA here
+      // if(prefs.analytics){ /* init analytics */ }
+    }
+
+    function syncUI(prefs){
+      if(ccFunctional) ccFunctional.checked = !!prefs.functional;
+      if(ccAnalytics) ccAnalytics.checked = !!prefs.analytics;
+      if(ccMarketing) ccMarketing.checked = !!prefs.marketing;
+    }
+
+    const saved = getPrefs();
+    if(saved){
+      hideBanner();
+      applyScripts(saved);
+    }else{
+      showBanner();
+    }
+
+    // Banner buttons
+    if(cookieManage){ cookieManage.addEventListener('click', ()=>{ syncUI(saved||DEFAULT_PREFS); openPrefs(); }); }
+    if(rejectAll){ rejectAll.addEventListener('click', ()=>{ const p={ functional:false, analytics:false, marketing:false }; setPrefs(p); hideBanner(); }); }
+    if(acceptAll){ acceptAll.addEventListener('click', ()=>{ const p={ functional:true, analytics:true, marketing:true }; setPrefs(p); hideBanner(); applyScripts({ ...DEFAULT_PREFS, ...p }); }); }
+
+    // Pref modal
+    if(prefClose){ prefClose.addEventListener('click', closePrefs); }
+    document.addEventListener('keydown', (e)=>{ if(e.key==='Escape') closePrefs(); });
+    if(ccRejectAll){ ccRejectAll.addEventListener('click', ()=>{ ccFunctional.checked=false; ccAnalytics.checked=false; ccMarketing.checked=false; }); }
+    if(ccAcceptAll){ ccAcceptAll.addEventListener('click', ()=>{ ccFunctional.checked=true; ccAnalytics.checked=true; ccMarketing.checked=true; }); }
+    if(ccSave){ ccSave.addEventListener('click', ()=>{
+      const p = { functional: !!ccFunctional.checked, analytics: !!ccAnalytics.checked, marketing: !!ccMarketing.checked };
+      setPrefs(p);
+      hideBanner();
+      applyScripts({ ...DEFAULT_PREFS, ...p });
+      closePrefs();
+    }); }
+
+    // Reopen control
+    if(fab){ fab.addEventListener('click', ()=>{ syncUI(getPrefs()||DEFAULT_PREFS); openPrefs(); }); }
+  })();
 
   // Tabs & mobile menu
   const navMenu = document.getElementById('navMenu');
