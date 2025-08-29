@@ -11,7 +11,7 @@
 <meta name="twitter:card" content="summary">
 <link rel="preconnect" href="https://cdn.jsdelivr.net" crossorigin>
 <link rel="dns-prefetch" href="https://cdn.jsdelivr.net">
-<script defer type="text/plain" data-cookiecategory="functional" data-src="https://cdn.jsdelivr.net/npm/@emailjs/browser@3/dist/email.min.js" crossorigin="anonymous"></script>
+<script defer type="text/plain" data-cookiecategory="necessary" data-src="https://cdn.jsdelivr.net/npm/@emailjs/browser@3/dist/email.min.js" crossorigin="anonymous"></script>
 <style>
   *{margin:0;padding:0;box-sizing:border-box}
   body{font-family:'Segoe UI',Tahoma,Geneva,Verdana,sans-serif;line-height:1.6;color:#333;background:linear-gradient(135deg,#667eea 0%,#764ba2 100%);min-height:100vh}
@@ -736,7 +736,12 @@
     document.cookie = name + '=' + encodeURIComponent(value) + '; expires=' + d.toUTCString() + '; path=/; SameSite=Lax';
   }
   function getCookie(name){
-    return document.cookie.split('; ').find(r => r.startsWith(name + '='))?.split('=')[1] || '';
+    const parts = document.cookie.split(';');
+    for(const part of parts){
+      const [k,v] = part.split('=');
+      if(k && k.trim() === name){ return v ? v.trim() : ''; }
+    }
+    return '';
   }
   function applyLang(lang){
     const dict = I18N[lang] || I18N.ro;
