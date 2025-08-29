@@ -768,7 +768,9 @@
     const contactFormTitle = document.querySelector('#contact .contact-form h3'); if(contactFormTitle) contactFormTitle.textContent = dict.contact_form_title;
     const contactSubmit = document.querySelector('#contact button[type="submit"]'); if(contactSubmit) contactSubmit.textContent = dict.contact_submit;
     const aboutTitle = document.querySelector('#about .section-title'); if(aboutTitle) aboutTitle.textContent = dict.about_title;
-    const teamTitle = document.querySelector('#about h3[style*="Echipa"], #about h3:contains("Echipa")'); if(teamTitle) teamTitle.textContent = dict.team_title;
+    // Find team heading robustly
+    const aboutH3s = document.querySelectorAll('#about h3');
+    aboutH3s.forEach(h=>{ if(h.textContent.trim().toLowerCase().includes('echipa')){ h.textContent = dict.team_title; } });
     const cookieTitle = document.querySelector('#cookies .section-title'); if(cookieTitle) cookieTitle.textContent = dict.cookies_policy;
     // Home services cards
     const s1 = document.querySelector('#home .services-grid .service-card:nth-child(1)');
