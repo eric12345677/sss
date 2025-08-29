@@ -681,6 +681,51 @@
       cookie_modal_accept_all: 'Acceptă tot',
       cookie_modal_save: 'Salvează',
       cookie_fab: 'Preferințe cookie',
+      // Services (tab)
+      services_html_title: 'Site-uri HTML Personalizate',
+      services_html_desc: 'Dezvoltare completă cu HTML5, CSS3 și JavaScript pentru performanțe maxime și design unic.',
+      services_html_li1: 'Cod HTML5 semantic',
+      services_html_li2: 'Animații și micro-interacțiuni',
+      services_html_li3: 'JavaScript interactiv',
+      services_html_li4: 'Optimizare pentru viteză',
+      services_html_li5: 'Compatibilitate cross-browser',
+      services_shop_title: 'Magazine Online',
+      services_shop_desc: 'Soluții e-commerce custom, cu sistem de plată personalizat.',
+      services_shop_li1: 'Catalog produse și coș',
+      services_shop_li2: 'Plăți online personalizate',
+      services_shop_li3: 'Gestiune comenzi și stocuri',
+      services_shop_li4: 'Integrare curier',
+      services_shop_li5: 'Rapoarte și analytics',
+      services_maint_title: 'Mentenanță și Suport',
+      services_maint_desc: 'Actualizări, backup-uri și suport tehnic continuu.',
+      services_maint_li1: 'Actualizări regulate',
+      services_maint_li2: 'Monitorizare uptime',
+      services_maint_li3: 'Backup',
+      services_maint_li4: 'Suport tehnic',
+      services_maint_li5: 'Rapoarte periodice',
+      // Pricing feature lists
+      pricing1_li1: 'Până la 5 pagini',
+      pricing1_li2: 'Design 100% personalizat',
+      pricing1_li3: 'HTML5, CSS3, JavaScript',
+      pricing1_li4: 'Performanță optimizată',
+      pricing1_li5: 'Cross-browser compatible',
+      pricing1_li6: 'Sursă cod furnizată',
+      pricing2_li1: 'Până la 10 pagini',
+      pricing2_li2: 'Animații avansate',
+      pricing2_li3: 'JavaScript interactiv',
+      pricing2_li4: 'API integrări',
+      pricing2_li5: 'Formulare și hărți',
+      pricing2_li6: 'PageSpeed 95+',
+      pricing3_li1: 'Magazin online complet',
+      pricing3_li2: 'Coș, checkout, cont client',
+      pricing3_li3: 'Sistem de plată personalizat',
+      pricing3_li4: 'Gestiune produse/comenzi',
+      pricing3_li5: 'Integrare curier',
+      pricing3_li6: '1 an suport inclus',
+      // About
+      about_who: 'Cine Suntem',
+      about_p1: 'WebCraft Pro este o echipă tânără de dezvoltatori web pasionați de tehnologie. Livrăm soluții moderne și accesibile.',
+      about_p2: 'Oferim servicii de calitate la prețuri competitive. Fiecare proiect este tratat cu atenție la detalii.',
     },
     en: {
       nav_home: 'Home', nav_services: 'Services', nav_pricing: 'Pricing', nav_hosting: 'Hosting', nav_portfolio: 'Portfolio', nav_contact: 'Contact', nav_about: 'About Us',
@@ -715,6 +760,47 @@
       cookie_modal_accept_all: 'Accept all',
       cookie_modal_save: 'Save',
       cookie_fab: 'Cookie preferences',
+      // Services (tab)
+      services_html_title: 'Custom HTML Websites',
+      services_html_desc: 'Full development with HTML5, CSS3 and JavaScript for top performance and unique design.',
+      services_html_li1: 'Semantic HTML5 code',
+      services_html_li2: 'Animations and micro-interactions',
+      services_html_li3: 'Interactive JavaScript',
+      services_html_li4: 'Speed optimization',
+      services_html_li5: 'Cross-browser compatibility',
+      services_shop_title: 'Online Stores',
+      services_shop_desc: 'Custom e-commerce solutions with tailored payment systems.',
+      services_shop_li1: 'Product catalog and cart',
+      services_shop_li2: 'Custom online payments',
+      services_shop_li3: 'Orders and inventory management',
+      services_shop_li4: 'Courier integration',
+      services_shop_li5: 'Reports and analytics',
+      services_maint_title: 'Maintenance & Support',
+      services_maint_desc: 'Updates, backups and ongoing technical support.',
+      services_maint_li1: 'Regular updates',
+      services_maint_li2: 'Uptime monitoring',
+      services_maint_li3: 'Backups',
+      services_maint_li4: 'Technical support',
+      services_maint_li5: 'Periodic reports',
+      // Pricing feature lists
+      pricing1_li1: 'Up to 5 pages',
+      pricing1_li2: '100% custom design',
+      pricing1_li3: 'HTML5, CSS3, JavaScript',
+      pricing1_li4: 'Performance optimized',
+      pricing1_li5: 'Cross-browser compatible',
+      pricing1_li6: 'Source code provided',
+      pricing2_li1: 'Up to 10 pages',
+      pricing2_li2: 'Advanced animations',
+      pricing2_li3: 'Interactive JavaScript',
+      pricing2_li4: 'API integrations',
+      pricing2_li5: 'Forms and maps',
+      pricing2_li6: 'PageSpeed 95+',
+      pricing3_li1: 'Complete online store',
+      pricing3_li2: 'Cart, checkout, customer account',
+      pricing3_li3: 'Custom payment system',
+      pricing3_li4: 'Product/order management',
+      pricing3_li5: 'Courier integration',
+      pricing3_li6: '1 year support included',
       // Home services
       home_s1_title: 'Optimized Performance',
       home_s1_desc: 'Fast websites with excellent PageSpeed and Core Web Vitals scores.',
@@ -820,6 +906,44 @@
     const hostingSection = document.querySelector('#hosting .section-title'); if(hostingSection) hostingSection.textContent = dict.hosting_title;
     const hostingPlan = document.querySelector('#hosting .pricing-card h3'); if(hostingPlan) hostingPlan.textContent = dict.hosting_plan;
     const hostingBtn = document.querySelector('#hosting .pricing-card .pricing-button'); if(hostingBtn) hostingBtn.textContent = dict.hosting_activate;
+    // Services (tab) content
+    const svc1 = document.querySelector('#services .services-grid .service-card:nth-child(1)');
+    if(svc1){
+      const h=svc1.querySelector('h3'); const p=svc1.querySelector('p'); const lis=svc1.querySelectorAll('li');
+      if(h) h.textContent = dict.services_html_title || h.textContent;
+      if(p) p.textContent = dict.services_html_desc || p.textContent;
+      if(lis[0]) lis[0].textContent = dict.services_html_li1 || lis[0].textContent;
+      if(lis[1]) lis[1].textContent = dict.services_html_li2 || lis[1].textContent;
+      if(lis[2]) lis[2].textContent = dict.services_html_li3 || lis[2].textContent;
+      if(lis[3]) lis[3].textContent = dict.services_html_li4 || lis[3].textContent;
+      if(lis[4]) lis[4].textContent = dict.services_html_li5 || lis[4].textContent;
+    }
+    const svc2 = document.querySelector('#services .services-grid .service-card:nth-child(2)');
+    if(svc2){
+      const h=svc2.querySelector('h3'); const p=svc2.querySelector('p'); const lis=svc2.querySelectorAll('li');
+      if(h) h.textContent = dict.services_shop_title || h.textContent;
+      if(p) p.textContent = dict.services_shop_desc || p.textContent;
+      if(lis[0]) lis[0].textContent = dict.services_shop_li1 || lis[0].textContent;
+      if(lis[1]) lis[1].textContent = dict.services_shop_li2 || lis[1].textContent;
+      if(lis[2]) lis[2].textContent = dict.services_shop_li3 || lis[2].textContent;
+      if(lis[3]) lis[3].textContent = dict.services_shop_li4 || lis[3].textContent;
+      if(lis[4]) lis[4].textContent = dict.services_shop_li5 || lis[4].textContent;
+    }
+    const svc3 = document.querySelector('#services .services-grid .service-card:nth-child(3)');
+    if(svc3){
+      const h=svc3.querySelector('h3'); const p=svc3.querySelector('p'); const lis=svc3.querySelectorAll('li');
+      if(h) h.textContent = dict.services_maint_title || h.textContent;
+      if(p) p.textContent = dict.services_maint_desc || p.textContent;
+      if(lis[0]) lis[0].textContent = dict.services_maint_li1 || lis[0].textContent;
+      if(lis[1]) lis[1].textContent = dict.services_maint_li2 || lis[1].textContent;
+      if(lis[2]) lis[2].textContent = dict.services_maint_li3 || lis[2].textContent;
+      if(lis[3]) lis[3].textContent = dict.services_maint_li4 || lis[3].textContent;
+      if(lis[4]) lis[4].textContent = dict.services_maint_li5 || lis[4].textContent;
+    }
+    // Pricing feature lists
+    const pr1 = document.querySelector('#pricing .pricing-grid .pricing-card:nth-child(1) .feature-list'); if(pr1){ const li=pr1.querySelectorAll('li'); if(li[0]) li[0].textContent=dict.pricing1_li1||li[0].textContent; if(li[1]) li[1].textContent=dict.pricing1_li2||li[1].textContent; if(li[2]) li[2].textContent=dict.pricing1_li3||li[2].textContent; if(li[3]) li[3].textContent=dict.pricing1_li4||li[3].textContent; if(li[4]) li[4].textContent=dict.pricing1_li5||li[4].textContent; if(li[5]) li[5].textContent=dict.pricing1_li6||li[5].textContent; }
+    const pr2 = document.querySelector('#pricing .pricing-grid .pricing-card.featured .feature-list'); if(pr2){ const li=pr2.querySelectorAll('li'); if(li[0]) li[0].textContent=dict.pricing2_li1||li[0].textContent; if(li[1]) li[1].textContent=dict.pricing2_li2||li[1].textContent; if(li[2]) li[2].textContent=dict.pricing2_li3||li[2].textContent; if(li[3]) li[3].textContent=dict.pricing2_li4||li[3].textContent; if(li[4]) li[4].textContent=dict.pricing2_li5||li[4].textContent; if(li[5]) li[5].textContent=dict.pricing2_li6||li[5].textContent; }
+    const pr3 = document.querySelector('#pricing .pricing-grid .pricing-card:nth-child(3) .feature-list'); if(pr3){ const li=pr3.querySelectorAll('li'); if(li[0]) li[0].textContent=dict.pricing3_li1||li[0].textContent; if(li[1]) li[1].textContent=dict.pricing3_li2||li[1].textContent; if(li[2]) li[2].textContent=dict.pricing3_li3||li[2].textContent; if(li[3]) li[3].textContent=dict.pricing3_li4||li[3].textContent; if(li[4]) li[4].textContent=dict.pricing3_li5||li[4].textContent; if(li[5]) li[5].textContent=dict.pricing3_li6||li[5].textContent; }
 
     // Switcher UI
     if(langFlag && langLabel){
