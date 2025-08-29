@@ -715,6 +715,19 @@
       cookie_modal_accept_all: 'Accept all',
       cookie_modal_save: 'Save',
       cookie_fab: 'Cookie preferences',
+      // Home services
+      home_s1_title: 'Optimized Performance',
+      home_s1_desc: 'Fast websites with excellent PageSpeed and Core Web Vitals scores.',
+      home_s2_title: 'Responsive Design',
+      home_s2_desc: '100% responsive – mobile, tablet and desktop.',
+      home_s3_title: 'Security',
+      home_s3_desc: 'SSL, backups and security best practices.',
+      home_s4_title: 'Modern Technologies',
+      home_s4_desc: 'HTML5, CSS3, JavaScript ES6+, PHP, MySQL, React and more.',
+      // About
+      about_who: 'Who We Are',
+      about_p1: 'WebCraft Pro is a young team of web developers passionate about technology. We deliver modern and accessible solutions.',
+      about_p2: 'We offer quality services at competitive prices. Every project is handled with attention to detail.',
     }
   };
 
@@ -750,8 +763,25 @@
     const contactFormTitle = document.querySelector('#contact .contact-form h3'); if(contactFormTitle) contactFormTitle.textContent = dict.contact_form_title;
     const contactSubmit = document.querySelector('#contact button[type="submit"]'); if(contactSubmit) contactSubmit.textContent = dict.contact_submit;
     const aboutTitle = document.querySelector('#about .section-title'); if(aboutTitle) aboutTitle.textContent = dict.about_title;
-    const teamTitle = document.querySelector('#about h3[style*="Echipa"]'); if(teamTitle) teamTitle.textContent = dict.team_title;
+    const teamTitle = document.querySelector('#about h3[style*="Echipa"], #about h3:contains("Echipa")'); if(teamTitle) teamTitle.textContent = dict.team_title;
     const cookieTitle = document.querySelector('#cookies .section-title'); if(cookieTitle) cookieTitle.textContent = dict.cookies_policy;
+    // Home services cards
+    const s1 = document.querySelector('#home .services-grid .service-card:nth-child(1)');
+    if(s1){ const h=s1.querySelector('h3'); const p=s1.querySelector('p'); if(h&&p && dict.home_s1_title){ h.textContent=dict.home_s1_title; p.textContent=dict.home_s1_desc; } }
+    const s2 = document.querySelector('#home .services-grid .service-card:nth-child(2)');
+    if(s2){ const h=s2.querySelector('h3'); const p=s2.querySelector('p'); if(h&&p && dict.home_s2_title){ h.textContent=dict.home_s2_title; p.textContent=dict.home_s2_desc; } }
+    const s3 = document.querySelector('#home .services-grid .service-card:nth-child(3)');
+    if(s3){ const h=s3.querySelector('h3'); const p=s3.querySelector('p'); if(h&&p && dict.home_s3_title){ h.textContent=dict.home_s3_title; p.textContent=dict.home_s3_desc; } }
+    const s4 = document.querySelector('#home .services-grid .service-card:nth-child(4)');
+    if(s4){ const h=s4.querySelector('h3'); const p=s4.querySelector('p'); if(h&&p && dict.home_s4_title){ h.textContent=dict.home_s4_title; p.textContent=dict.home_s4_desc; } }
+    // About section short texts
+    const aboutBox = document.querySelector('#about div[style*="padding:3rem"]');
+    if(aboutBox && dict.about_who){
+      const who = aboutBox.querySelector('h3'); if(who) who.textContent = dict.about_who;
+      const ps = aboutBox.querySelectorAll('p');
+      if(ps[0] && dict.about_p1) ps[0].textContent = dict.about_p1;
+      if(ps[1] && dict.about_p2) ps[1].textContent = dict.about_p2;
+    }
     // Cookie banner & modal texts
     const cbText = document.querySelector('#cookieBanner .cookie-text'); if(cbText){
       const policyLink = cbText.querySelector('a.nav-link');
@@ -894,26 +924,21 @@
   });
   window.addEventListener('resize',()=>{ if(window.innerWidth>768) closeMobileMenu(); });
 
-  // Form
+  // Form (safe EmailJS or mailto fallback if functional cookies not allowed)
   document.getElementById('contactForm').addEventListener('submit', function(event){
     event.preventDefault();
     const submitBtn = this.querySelector('button[type="submit"]');
     const originalText = submitBtn.innerHTML;
     submitBtn.innerHTML = '⏳ Se trimite...';
     submitBtn.disabled = true;
-    emailjs.sendForm('service_8hm6jie','template_qwy63lm', this).then(()=>{
-      submitBtn.innerHTML = '✅ Trimis cu succes!';
-      submitBtn.style.background = 'linear-gradient(45deg,#27ae60,#229954)';
-      alert('✅ Mulțumim! Îți vom răspunde în maxim 24 de ore.');
-      this.reset();
-      setTimeout(()=>{ submitBtn.innerHTML=originalText; submitBtn.style.background='linear-gradient(45deg,#ee5a24,#ff6b6b)'; submitBtn.disabled=false; },3000);
-    },(error)=>{
-      console.log('EmailJS Error:', error);
-      submitBtn.innerHTML='📧 Deschide Email';
-      submitBtn.style.background='linear-gradient(45deg,#f39c12,#e67e22)';
-      const fd = new FormData(this);
-      const subject = `Solicitare Oferta WebCraft Pro - ${fd.get('service')}`;
-      const body = `Solicitare ofertă de la: ${fd.get('name')}
+
+    const performFallback = () => {
+      try{
+        submitBtn.innerHTML='📧 Deschide Email';
+        submitBtn.style.background='linear-gradient(45deg,#f39c12,#e67e22)';
+        const fd = new FormData(this);
+        const subject = `Solicitare Oferta WebCraft Pro - ${fd.get('service')}`;
+        const body = `Solicitare ofertă de la: ${fd.get('name')}
 
 DETALII CLIENT:
 - Nume: ${fd.get('name')}
@@ -928,10 +953,32 @@ DETALII PROIECT:
 
 DESCRIEREA PROIECTULUI:
 ${fd.get('message')}`;
-      window.location.href=`mailto:ericandrei007@gmail.com?subject=${encodeURIComponent(subject)}&body=${encodeURIComponent(body)}`;
-      alert('Se va deschide clientul tău de email pentru a trimite mesajul.');
-      setTimeout(()=>{ submitBtn.innerHTML=originalText; submitBtn.style.background='linear-gradient(45deg,#ee5a24,#ff6b6b)'; submitBtn.disabled=false; },3000);
-    });
+        window.location.href=`mailto:ericandrei007@gmail.com?subject=${encodeURIComponent(subject)}&body=${encodeURIComponent(body)}`;
+        alert('Se va deschide clientul tău de email pentru a trimite mesajul.');
+      } finally {
+        setTimeout(()=>{ submitBtn.innerHTML=originalText; submitBtn.style.background='linear-gradient(45deg,#ee5a24,#ff6b6b)'; submitBtn.disabled=false; },3000);
+      }
+    };
+
+    try {
+      if (window.emailjs && typeof emailjs.sendForm === 'function'){
+        emailjs.sendForm('service_8hm6jie','template_qwy63lm', this).then(()=>{
+          submitBtn.innerHTML = '✅ Trimis cu succes!';
+          submitBtn.style.background = 'linear-gradient(45deg,#27ae60,#229954)';
+          alert('✅ Mulțumim! Îți vom răspunde în maxim 24 de ore.');
+          this.reset();
+          setTimeout(()=>{ submitBtn.innerHTML=originalText; submitBtn.style.background='linear-gradient(45deg,#ee5a24,#ff6b6b)'; submitBtn.disabled=false; },3000);
+        },(error)=>{
+          console.log('EmailJS Error:', error);
+          performFallback();
+        });
+      } else {
+        performFallback();
+      }
+    } catch(err){
+      console.log('Submit handler error:', err);
+      performFallback();
+    }
   });
 
   // Scroll reveal
